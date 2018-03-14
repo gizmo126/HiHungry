@@ -1,4 +1,4 @@
-## LAMP App Starter
+## HiHungry
 - PHP template application connected to MySQL db
 - Boostrap and jQuery enabled
 - Currently running on cPanel

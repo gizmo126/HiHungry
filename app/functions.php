@@ -1,12 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: marouaneboujlal
- * Date: 18/12/2015
- * Time: 21:40
- */
-
-/**
  * @param $var variable
  * @return string return debug du varibale
  */

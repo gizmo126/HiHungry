@@ -12,7 +12,7 @@ def queryFromCities():
         try:
             params = {'entity_id' : city, 'entity_type' : 'city', 'country_id': 216}
             url = "https://developers.zomato.com/api/v2.1/search?&entity_type=city"
-            response = requests.get(url, params=params, headers={"user-key": "3933c5ae55c6f5937d3c5508d7e9ce78"})
+            response = requests.get(url, params=params, headers={"user-key": "API_KEY"})
             restaurants = json.loads(response.text)
             for r in (restaurants['restaurants']):
                 restaurants_in_cities.append(r['restaurant'])
