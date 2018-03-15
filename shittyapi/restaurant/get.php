@@ -4,7 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 // include database and object files
-include_once '../../app/database.php';
+include_once '../../app/database2.php';
 include_once '../objects/restaurant.php';
 
 // instantiate database and product object
@@ -15,7 +15,7 @@ $db = $database->getConnection();
 $restaurant = new Restaurant($db);
 
 // query products
-$stmt = $restaurant->read();
+$stmt = $restaurant->get();
 $num = $stmt->rowCount();
 
 // check if more than 0 record found

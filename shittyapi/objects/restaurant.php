@@ -24,13 +24,12 @@ class Restaurant{
     }
 
     // read products
-    function read(){
+    function get(){
         // select all query
         $query = "SELECT
                     r.restaurant_id, r.restaurant_name, r.address, r.city, r.zipcode, r.price_range, r.delivers, r.rating, r.votes
                   FROM
                     " . $this->table_name . " r";
-
         // prepare query statement
         $stmt = $this->conn->prepare($query);
         // execute query
