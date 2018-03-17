@@ -1,6 +1,6 @@
 <?php
 
-include "../../app/database.php";
+include "app/database.php";
 
 ?>
 <!DOCTYPE html>
