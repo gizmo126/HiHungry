@@ -1,7 +1,5 @@
 <?php
-
-include "app/database.php";
-
+include_once "app/database.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,3 +47,4 @@ include "app/database.php";
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+</html>

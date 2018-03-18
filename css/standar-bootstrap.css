@@ -6,6 +6,21 @@
     color:#122b40;
 
 }
+.form-login-txtbox{
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color:#122b40;
+    width:38%;
+    height:40px;
+    font-size: 18px;
+}
+
+.form-login-label{
+    font-size:21px;
+}
+
 .form-control:focus {
     border-color: #aaa;
     outline: 0;
