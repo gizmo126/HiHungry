@@ -34,7 +34,7 @@ elseif(isset($_POST['signup'])){
 		$upwd = mysqli_real_escape_string($conn, $_POST['psw_signup']);
 		if(empty($unme) || empty($upwd)){
 		}
-		else{
+		else {
 				$sql = "SELECT * FROM User WHERE user_name='$unme'"; //create query
 				$result = mysqli_query($conn, $sql);
 				if(mysqli_num_rows($result) != 0){
@@ -43,6 +43,7 @@ elseif(isset($_POST['signup'])){
 	      } else {
 					$sql2 = "INSERT INTO User (user_name, password) VALUES ('$unme', '$upwd')";
 					$result = mysqli_query($conn, $sql2);
+          $success = "Account created, please sign in.";
 				}
 		}
 }
@@ -81,6 +82,7 @@ ob_flush();
                    	 	</div>
 											<div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
 											<div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php if(isset($error2)){ echo $error2; } ?></div>
+                      <div style = "font-size:11px; color:#006600; margin-top:10px"><?php if(isset($success)){ echo $success; } ?></div>
 											<button type="login" name="login" class="btn btn-primary">Login</button>
 											<div class="row top-buffer">
 											<div class="row content">
@@ -118,7 +120,8 @@ ob_flush();
 								<button name="signup" type="signup" class="btn btn-primary">Sign Up</button>
 							</div>
 							<div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php if(isset($error2)){ echo $error2; } ?></div>
-						</form>
+              <div style = "font-size:11px; color:#006600; margin-top:10px"><?php if(isset($success)){ echo $success; } ?></div>
+            </form>
 					</div>
 				</div>
 			</div>
