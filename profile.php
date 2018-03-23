@@ -11,7 +11,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 ?>
   <div class="container">
     <div class="starter-template">
-      <h1>HiHungry</h1>
+      <h1>Profile</h1>
       <p class="lead">Welcome to HiHungry</p>
     </div>
   </div><!-- /.container -->

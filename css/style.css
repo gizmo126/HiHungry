@@ -1,3 +1,7 @@
 input:focus::-webkit-input-placeholder {
     color: transparent;
 }
+
+.top-buffer {
+    margin-top: 50px;
+}

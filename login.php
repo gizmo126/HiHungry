@@ -2,11 +2,10 @@
 
 session_start();
 ob_start();
-	include 'app/connect.php';
+include 'app/connect.php';
 if(isset($_POST['login'])){
 
- include_once 'app/connect.php';
-
+ 	include_once 'app/connect.php';
   $unme = mysqli_real_escape_string($conn, $_POST['uname']);
   $upwd = mysqli_real_escape_string($conn, $_POST['psw']);
 
@@ -25,22 +24,23 @@ if(isset($_POST['login'])){
       		$_SESSION['loggedin'] = true;
       		$_SESSION['user'] = $unme;
       		header('Location: index.php');
-            exit();
+          exit();
       }
   }
 }
 elseif(isset($_POST['signup'])){
 		include_once 'app/connect.php';
-		$unme = mysqli_real_escape_string($conn, $_POST['uname']);
-		$upwd = mysqli_real_escape_string($conn, $_POST['psw']);
+		$unme = mysqli_real_escape_string($conn, $_POST['uname_signup']);
+		$upwd = mysqli_real_escape_string($conn, $_POST['psw_signup']);
 		if(empty($unme) || empty($upwd)){
 		}
 		else{
-				$sql = "SELECT * FROM User WHERE user_name='$unme'";//create query
+				$sql = "SELECT * FROM User WHERE user_name='$unme'"; //create query
 				$result = mysqli_query($conn, $sql);
 				if(mysqli_num_rows($result) != 0){
-	      		$error = "Username has been taken.";
-	      } else{
+					$error1 = "Username has been taken.";
+	      	$error2 = "Username has been taken.";
+	      } else {
 					$sql2 = "INSERT INTO User (user_name, password) VALUES ('$unme', '$upwd')";
 					$result = mysqli_query($conn, $sql2);
 				}
@@ -62,7 +62,8 @@ ob_flush();
 </head>
 <body>
     <div class="container-fluid text-center">
-        <div class="row content">
+				<div class="row top-buffer">
+				<div class="row content">
             <div class="col-sm-2 sidenav">
             </div>
             <div>
@@ -78,16 +79,56 @@ ob_flush();
                         	<label class="form-login-label" for="psw"><b>Password</b></label>
                         	<input type="password" class="form-login-txtbox" placeholder=" Enter Password" name="psw" required>
                    	 	</div>
-                      <button type="signup" name="signup" class="btn btn-info">Sign Up</button>
-											<button type="login" name="login" class="btn btn-info">Login</button>
-               		</form>
-               		<div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
+											<div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
+											<div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php if(isset($error2)){ echo $error2; } ?></div>
+											<button type="login" name="login" class="btn btn-primary">Login</button>
+											<div class="row top-buffer">
+											<div class="row content">
+												<h3>Need an Account?</h3>
+												<button type="button" data-toggle="modal" data-target="#signupModal" class="btn btn-primary">Sign Up</button>
+											</div>
+									</form>
                 </div>
             </div>
+    		</div>
     </div>
-    </div>
-		<script src="//code.jquery.com/jquery-1.10.1.min.js" type="text/javascript"></script>
-		<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+
+		<!-- Modal -->
+		<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form class="signup-form" id="signup-modal-form" action="" method="POST">
+							<div class="form-group">
+									<label class="form-login-label" for="uname"><b>Username</b></label>
+									<input type="text" class="form-login-txtbox" placeholder=" Enter Username" name="uname_signup" required>
+							</div>
+							<div class="form-group">
+									<label class="form-login-label" for="psw"><b>Password</b></label>
+									<input type="password" class="form-login-txtbox" placeholder=" Enter Password" name="psw_signup" required>
+							</div>
+							<div class="modal-footer">
+								<button name="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+								<button name="signup" type="signup" class="btn btn-primary">Sign Up</button>
+							</div>
+							<div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php if(isset($error2)){ echo $error2; } ?></div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript"> function showModal(){ $('#signupModal').modal('show'); }</script>
+		<script src="js/login.js" type="text/javascript"></script>
+		<script
+		  src="http://code.jquery.com/jquery-3.3.1.min.js"
+		  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		  crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
