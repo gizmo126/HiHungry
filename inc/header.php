@@ -49,7 +49,7 @@ include_once "app/database.php";
             <li <?php if($_SERVER['SCRIPT_NAME']=="/search.php") { ?> class="nav-item active" <?php } ?>>
               <a href="#search">Search</a></li>
             <li <?php if($_SERVER['SCRIPT_NAME']=="/restaurants.php") { ?> class="nav-item active" <?php } ?>>
-              <a href="#restaurants">Restaurants</a>
+              <a href="/restaurant.php">Restaurants</a>
             </li>
             <li <?php if($_SERVER['SCRIPT_NAME']=="/users.php") { ?> class="nav-item active" <?php } ?>>
               <a href="#users">Users</a>
