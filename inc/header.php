@@ -10,7 +10,7 @@ include_once "app/database.php";
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="img/favicon.ico">
 
     <title>HiHungry</title>
 
@@ -40,7 +40,7 @@ include_once "app/database.php";
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/inc/logout.php">HiHungry</a>
+          <a class="navbar-brand" href="#">HiHungry</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
