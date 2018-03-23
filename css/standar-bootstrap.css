@@ -3,22 +3,23 @@
     border-radius: 1px;
     -webkit-box-shadow: none;
     box-shadow: none;
-    color:#122b40;
+    color: #122b40;
 
 }
-.form-login-txtbox{
+
+.form-login-txtbox {
     border: 1px solid #bbb;
     border-radius: 5px;
     -webkit-box-shadow: none;
     box-shadow: none;
-    color:#122b40;
-    width:38%;
-    height:40px;
+    color: #122b40;
+    width: 38%;
+    height: 40px;
     font-size: 18px;
 }
 
-.form-login-label{
-    font-size:21px;
+.form-login-label {
+    font-size: 21px;
 }
 
 .form-control:focus {
@@ -26,8 +27,9 @@
     outline: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
-    color:#122b40;
+    color: #122b40;
 }
+
 .btn-success {
     color: #fff;
     background-color: #2ecc71;
@@ -38,6 +40,7 @@
     -o-transition: all .5s;
     transition: all .5s;
 }
+
 .btn-success:hover {
     color: #fff;
     background-color: #27ae60;
@@ -54,15 +57,18 @@
     -o-transition: all .5s;
     transition: all .5s;
 }
+
 .btn-warning:hover {
     color: #fff;
     background-color: #f39c12;
     border-color: transparent;
 }
+
 .navbar-inverse {
     background-color: #2c3e50;
     border-color: #2c3e50;
 }
+
 .navbar-inverse .navbar-brand {
     color: #ecf0f1;
 }
@@ -76,13 +82,20 @@
     padding: 9px 6px;
     border-radius: 3px;
 }
+
 .navbar-inverse .navbar-toggle .icon-bar {
     background-color: #ecf0f1;
 }
+
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
     color: #fff;
     background-color: #34495e;
 }
-.alert{
+
+.navbar-nav .navbar-right {
+    float: right;
+}
+
+.alert {
     border-radius: 0px;
 }
