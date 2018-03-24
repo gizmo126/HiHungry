@@ -23,7 +23,7 @@ Class Restaurant {
         $this->address = $rest_results["address"];
         $this->city = $rest_results["city"];
         $this->zipcode = $rest_results["zipcode"];
-        $this->pricerange = $rest_results["pricerange"];
+        $this->pricerange = $rest_results["price_range"];
         $this->delivers = $rest_results["delivers"];
         $this->rating = $rest_results["rating"];
         $this->votes = $rest_results["votes"];
