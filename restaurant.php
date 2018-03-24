@@ -10,6 +10,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $sql = "SELECT restaurant_name FROM Restaurant WHERE city ='$loc'";//query for restaurants
     $csn = mysqli_real_escape_string($conn, $_POST['cuisine']);
     $csn_marker = 0;
+    $rest_marker = 0;
     if(!empty($csn)){
       $sql2 = "SELECT * FROM Cuisine WHERE cuisine_name='$csn'";
       $result2 = mysqli_query($conn, $sql2);                    // result2 holds cuisine search
@@ -27,6 +28,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $result = mysqli_query($conn, $sql);
     $restaurants = "";
     if(mysqli_num_rows($result) > 0){
+      $rest_marker = 1;
       while($row = mysqli_fetch_assoc($result)){
         $restaurants .= $row["restaurant_name"] . "<br>";
       }
@@ -54,11 +56,11 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         </form>
       </div>
       <div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
-      <div style = "font-size:30px"><?php if(mysqli_num_rows($result) > 0 && isset($loc)){ echo "<br>".$loc; } ?></div>
+      <div style = "font-size:30px"><?php if($rest_marker && isset($loc)){ echo "<br>".$loc; } ?></div>
       <div style = "font-size:20px">
         <?php
-          if(isset($csn) && $csn_marker == 0 && mysqli_num_rows($result) > 0){ echo "All<br>"; }
-          elseif(mysqli_num_rows($result) > 0 && $csn_marker == 1){ echo $csn."<br>"; } ?>
+          if(isset($csn) && $csn_marker == 0 && $rest_marker){ echo "All<br>"; }
+          elseif($rest_marker && $csn_marker == 1){ echo $csn."<br>"; } ?>
       </div>
       <div><?php if(isset($restaurants)){ echo "<br>".$restaurants; } ?></div>
     </div>
