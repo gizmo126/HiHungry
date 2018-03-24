@@ -1,9 +1,8 @@
 import requests
 import json
 
-# pip install requests
-# This script queries the Zomato API with our selected city ID's and obtains 20 restaurants from each city
-# Then results are ouputed into restaurants.json in order to populated our database with populate_db_restaurants.py
+# This script queries the Zomato API with our selected city ID's and obtains possible cuisines from each city
+# Then results are ouputed into cuisines.json in order to populated our database with 6_populate_db_cuisines.py
 
 def queryFromCities():
     cities_id = ['685', '292', '281', '280', '277', '291', '289', '288', '306', '279', '283', '302', '201', '304', '276']

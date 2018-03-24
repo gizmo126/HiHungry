@@ -15,6 +15,6 @@ $DBNAME="gizmohihungry_test";
 //$conn = mysqli_connect($DBHOST, $DBUSER, $DBPASS, $DBNAME);
 if ( !$conn ) {
  die("Connection failed : " . mysqli_connect_errno());
- }
+}
 
 ?>

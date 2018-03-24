@@ -1,5 +1,5 @@
 <?php
-class Database{
+class Database {
     // specify your own database credentials
     private $host = "cpanel3.engr.illinois.edu";
     private $db_name = "gizmohihungry_test";

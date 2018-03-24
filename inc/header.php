@@ -1,5 +1,6 @@
 <?php
 include_once "app/database.php";
+header('Content-Type: text/html; charset=ISO-8859-1'); // cause special chars in restaurants are being a bitch
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +49,7 @@ include_once "app/database.php";
             </li>
             <li <?php if($_SERVER['SCRIPT_NAME']=="/search.php") { ?> class="nav-item active" <?php } ?>>
               <a href="#search">Search</a></li>
-            <li <?php if($_SERVER['SCRIPT_NAME']=="/restaurants.php") { ?> class="nav-item active" <?php } ?>>
+            <li <?php if($_SERVER['SCRIPT_NAME']=="/restaurant.php") { ?> class="nav-item active" <?php } ?>>
               <a href="/restaurant.php">Restaurants</a>
             </li>
             <li <?php if($_SERVER['SCRIPT_NAME']=="/users.php") { ?> class="nav-item active" <?php } ?>>

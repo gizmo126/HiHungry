@@ -2,8 +2,9 @@ import MySQLdb
 import json
 import random
 
-# This script populates a MySQL database with review data from the reviews.json file
-# The review data is from the Zomato API and outputted into a json file by populate_json_review.py
+# This script populates a MySQL database with Type relation
+# reads cuisines.json and restaurants.json
+# assigns table with restaurants and its cuisine types
 
 def dbconnect():
     try:
