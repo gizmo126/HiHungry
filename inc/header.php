@@ -47,10 +47,8 @@ header('Content-Type: text/html; charset=ISO-8859-1'); // cause special chars in
             <li <?php if($_SERVER['SCRIPT_NAME']=="/index.php") { ?> class="nav-item active" <?php } ?>>
               <a href="/index.php">Home</a>
             </li>
-            <li <?php if($_SERVER['SCRIPT_NAME']=="/search.php") { ?> class="nav-item active" <?php } ?>>
-              <a href="#search">Search</a></li>
-            <li <?php if($_SERVER['SCRIPT_NAME']=="/restaurant.php") { ?> class="nav-item active" <?php } ?>>
-              <a href="/restaurant.php">Restaurants</a>
+            <li <?php if($_SERVER['SCRIPT_NAME']=="/restaurants.php") { ?> class="nav-item active" <?php } ?>>
+              <a href="/restaurants.php">Restaurants</a>
             </li>
             <li <?php if($_SERVER['SCRIPT_NAME']=="/users.php") { ?> class="nav-item active" <?php } ?>>
               <a href="#users">Users</a>

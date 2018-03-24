@@ -4,7 +4,7 @@ session_start();
     include 'inc/header.php';
     include 'inc/footer.php';
     include 'app/connect.php';
-    include 'inc/models/Reviews.php';
+    include 'inc/models/ReviewObj.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     // get user_id
@@ -23,7 +23,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         $rest_sql = "SELECT restaurant_name FROM Restaurant WHERE restaurant_id='$rest_id'";
         $rest_result = mysqli_query($conn, $rest_sql);
         $rest_name = mysqli_fetch_assoc($rest_result)["restaurant_name"];
-        $review = new Review($row['review_id'], $row['user_id'], $row['restaurant_id'], $row['review_text'], $row['rating'], $rest_name);
+        $review = new Review($row['review_id'], $row['user_id'], $row['restaurant_id'], $row['review_text'], $row['rating'], $rest_name, $user);
         array_push($reviews, $review);
       }
     }
@@ -38,14 +38,18 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       <h1>Profile</h1>
       <p class="lead">Hi <?php if(isset($user)){ echo $user; } ?></p>
       <div class="row">
-        <h3> Reviews </h3>
+        <h2> Reviews </h2>
       </div>
       <?php if(count($reviews) == 0){ ?>
                 <h4> No Reviews Yet!<h4>
       <?php } else {
                 foreach($reviews as &$rev){?>
                   <div class="row">
-                      <div class="col-6 col-md-8"><?php if(isset($rev->restaurant_name)){ echo $rev->restaurant_name; }?></div>
+                      <?php echo
+                            '<a href="restaurant.php?restid=' . $rev->restaurant_id . '">' .
+                                '<div class="col-6 col-md-8">' . $rev->restaurant_name . '</div>' .
+                            '</a>';
+                      ?>
                       <div class="col-6 col-md-4"><?php if(isset($rev->rating)){ echo $rev->rating; }?></div>
                   </div>
                   <div class="row">

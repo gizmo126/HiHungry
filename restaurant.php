@@ -1,67 +1,78 @@
 <?php
-@ob_start();
-session_start();
-    include 'inc/header.php';
-    include 'inc/footer.php';
-    include 'app/connect.php';
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-  if(isset($_POST['search'])){
-    $loc = mysqli_real_escape_string($conn, $_POST['city']);
-    $sql = "SELECT restaurant_name FROM Restaurant WHERE city ='$loc'";//query for restaurants
-    $csn = mysqli_real_escape_string($conn, $_POST['cuisine']);
-    $csn_marker = 0;
-    $rest_marker = 0;
-    if(!empty($csn)){
-      $sql2 = "SELECT * FROM Cuisine WHERE cuisine_name='$csn'";
-      $result2 = mysqli_query($conn, $sql2);                    // result2 holds cuisine search
-      if(mysqli_num_rows($result2) < 1){
-          $error = "Try another cuisine. Displaying all restaurants instead.";
-      } else{
-        $sql = "SELECT restaurant_name FROM Restaurant, Cuisine, Restaurant_Type WHERE city ='$loc'
-                  AND Restaurant.restaurant_id = Restaurant_Type.restaurant_id
-                  AND Restaurant_Type.cuisine_id = Cuisine.cuisine_id
-                  AND cuisine_name = '$csn'";
-            //update query for cuisine specifications
-            $csn_marker = 1;
+  @ob_start();
+  session_start();
+  include 'inc/header.php';
+  include 'inc/footer.php';
+  include 'app/connect.php';
+  include 'inc/models/RestaurantObj.php';
+  include 'inc/models/ReviewObj.php';
+
+  if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    if(isset($_GET['restid'])) {
+      // Populate RestaurantObj
+      $restid = $_GET['restid'];
+      $rest = new Restaurant($restid, $conn);
+
+      // Get Review
+      $reviews_sql = "SELECT * FROM Reviews WHERE restaurant_id='$restid'";
+      $reviews_result = mysqli_query($conn, $reviews_sql);
+      $reviews = [];
+      if(mysqli_num_rows($reviews_result) > 0){
+        while($row = mysqli_fetch_assoc($reviews_result)){
+          $posted_by = $row['user_id'];
+          $user_sql = "SELECT user_name FROM User WHERE user_id='$posted_by'";
+          $user_result = mysqli_query($conn, $user_sql);
+          $user_name = mysqli_fetch_assoc($user_result)["user_name"];
+          $review = new Review($row['review_id'], $row['user_id'], $row['restaurant_id'], $row['review_text'], $row['rating'], $rest->restaurant_name, $user_name);
+          array_push($reviews, $review);
+        }
       }
+    } else {
+      header("location:javascript://history.go(-1)");
     }
-    $result = mysqli_query($conn, $sql);
-    $restaurants = "";
-    if(mysqli_num_rows($result) > 0){
-      $rest_marker = 1;
-      while($row = mysqli_fetch_assoc($result)){
-        $restaurants .= $row["restaurant_name"] . "<br>";
-      }
-    } else{
-      $error = "No results found.";
-      $csn_marker = 0;
-    }
+  } else {
+      header('Location: login.php');
   }
-} else {
-    header('Location: login.php');
-}
 ?>
   <div class="container">
     <div class="starter-template">
-      <h1>Restaurants</h1>
+      <h1><?php echo $rest->restaurant_name; ?></h1>
       <div class="text-center">
-          <h1>Where Are You?</h1>
-          <br/>
-          <form class="signup-form" action ="" method="POST">
-            <div class="form-group">
-                <input type="text" class="form-input-txtbox" placeholder=" Enter City" name="city">
-                <input type="text" class="form-input-txtbox" placeholder=" Enter Cuisine" name="cuisine">
-                <button type="search" name="search" class="btn btn-primary">Search</button>
-            </div>
-        </form>
+          <div class="row"><?php if(isset($rest->address)){ echo $rest->address; }?></div>
+          <div class="row"><?php if(isset($rest->pricerange)){ for($x = 0; $x < $rest->pricerange; $x++){ echo "$"; } }?></div>
+          <div class="row"><?php if(isset($rest->rating)){ echo "Rating: " . $rest->rating; } ?></div>
+          <div class="row"><?php if(isset($rest->votes)){ echo "Votes: " . $rest->votes; } ?></div>
+          <div class="row"><?php if(isset($rest->delivers)){ if($rest->delivers == 0){echo "Delivers"; } else {echo "No Delivery"; } }?></div>
+          <div class="row">
+            <?php
+              echo "Cuisines: ";
+              foreach($rest->cuisine_names as &$cuisine){
+                echo $cuisine . " ";
+              }
+            ?>
+          </div>
+          <div class="top-buffer"></div>
       </div>
-      <div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
-      <div style = "font-size:30px"><?php if($rest_marker && isset($loc)){ echo "<br>".$loc; } ?></div>
-      <div style = "font-size:20px">
-        <?php
-          if(isset($csn) && $csn_marker == 0 && $rest_marker){ echo "All<br>"; }
-          elseif($rest_marker && $csn_marker == 1){ echo $csn."<br>"; } ?>
+      <div>
+        <div class="row">
+          <h2> Reviews </h2>
+        </div>
+        <?php if(count($reviews) == 0){ ?>
+                  <h4> No Reviews Yet!<h4>
+        <?php } else {
+                  foreach($reviews as &$rev){?>
+                    <div class="row">
+                        <div class="col-6 col-md-8"><?php if(isset($rev->user_name)){ echo $rev->user_name; }?></div>
+                        <div class="col-6 col-md-4"><?php if(isset($rev->rating)){ echo $rev->rating; }?></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-...">
+                          <?php if(isset($rev->rating)){ echo $rev->review_text; }?>
+                      </div>
+                    </div>
+                    <div class="row"><hr></div>
+        <?php     }
+              } ?>
       </div>
-      <div><?php if(isset($restaurants)){ echo "<br>".$restaurants; } ?></div>
     </div>
   </div>
