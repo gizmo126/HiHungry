@@ -46,6 +46,15 @@ Class Restaurant {
           }
         }
     }
+
+    // update the vote count of restaurant when a review is added
+    public function incrementVote($conn) {
+      $votes = $this->votes;
+      $votes += 1;
+      $update_sql = "UPDATE Restaurant SET votes='$votes' WHERE restaurant_id='$this->restaurant_id'";
+      $result = mysqli_query($conn, $update_sql);
+      return $result;
+    }
 }
 
 ?>

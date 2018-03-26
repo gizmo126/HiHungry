@@ -59,7 +59,7 @@ header('Content-Type: text/html; charset=ISO-8859-1'); // cause special chars in
                 <a class="nav-link" href="profile.php"><i class="fa fa-user"></i> Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/inc/logout.php"><i class="fa fa-sign-out"></i> Logout</a>
+              <a class="nav-link" href="/inc/functions/logout.php"><i class="fa fa-sign-out"></i> Logout</a>
             </li>
           </ul>
         </div><!--/.nav-collapse -->

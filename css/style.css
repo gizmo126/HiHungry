@@ -5,3 +5,7 @@ input:focus::-webkit-input-placeholder {
 .top-buffer {
     margin-top: 50px;
 }
+
+.btn-default {
+    margin-bottom: 10px;
+}

@@ -60,6 +60,7 @@ ob_flush();
 		<link href="css/starter-template.css" rel="stylesheet"/>
 		<link href="css/standar-bootstrap.css" rel="stylesheet"/>
 		<link href="css/style.css" rel="stylesheet"/>
+    <link rel="icon" href="img/favicon.ico">
 </head>
 <body>
     <div class="container-fluid text-center">
@@ -100,10 +101,8 @@ ob_flush();
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
 						<h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
 					</div>
 					<div class="modal-body">
 						<form class="signup-form" id="signup-modal-form" action="" method="POST">

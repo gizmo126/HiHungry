@@ -6,6 +6,7 @@
   include 'app/connect.php';
   include 'inc/models/RestaurantObj.php';
   include 'inc/models/ReviewObj.php';
+  include 'inc/deleteReviews.php';
 
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     if(isset($_GET['restid'])) {
@@ -20,11 +21,7 @@
       $reviews = [];
       if(mysqli_num_rows($reviews_result) > 0){
           while($row = mysqli_fetch_assoc($reviews_result)){
-              $posted_by = $row['user_id'];
-              $user_sql = "SELECT user_name FROM User WHERE user_id='$posted_by'";
-              $user_result = mysqli_query($conn, $user_sql);
-              $user_name = mysqli_fetch_assoc($user_result)["user_name"];
-              $review = new Review($row['review_id'], $row['user_id'], $row['restaurant_id'], $row['review_text'], $row['rating'], $rest->restaurant_name, $user_name);
+              $review = new Review($row['review_id'], $conn, NULL);
               array_push($reviews, $review);
           }
       }
@@ -45,11 +42,10 @@
                   VALUES ('$user_id', '$restaurant_id', '$review_text', '$review_rating')";
           $result = mysqli_query($conn, $insert_sql);
 
-          // update the number of reviews that we have
-          $votes = $rest->votes;
-          $votes += 1;
-          $update_sql = "UPDATE Restaurant SET votes='$votes' WHERE restaurant_id='$restaurant_id'";
-          $result2 = mysqli_query($conn, $update_sql);
+          // update the number of reviews (votes) that we have for this restaurant
+          $rest->incrementVote($conn);
+
+          // refresh page
           echo "<meta http-equiv='refresh' content='0'>";
       }
 
@@ -101,31 +97,37 @@
           <button type="button" data-toggle="modal" data-target="#addReviewModal" class="btn btn-primary">Add Review +</button>
         </div>
         <?php if(count($reviews) == 0){ ?>
-                  <h4> No Reviews Yet!<h4>
+                  <div class="row"><h4> No Reviews Yet!<h4></div>
         <?php } else {
                   foreach($reviews as &$rev){?>
+                    <div class="row"><hr></div>
                     <div class="row">
                         <div class="col-6 col-md-8"><?php if(isset($rev->user_name)){ echo $rev->user_name; }?></div>
-                        <div class="col-6 col-md-4"><?php if(isset($rev->rating)){ echo $rev->rating; }?></div>
+                        <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo $rev->rating; }?></div>
+                        <?php if($rev->user_name == $_SESSION['user']){
+                                  echo '<div class="col-6 col-md-1">
+                                          <button data-toggle="modal" data-target="#deleteReviewModal" data-id="' . $rev->review_id . '" class="btn btn-default">x</button>
+                                        </div>';
+                                  }
+                        ?>
                     </div>
                     <div class="row">
                       <div class="col-...">
                           <?php if(isset($rev->rating)){ echo $rev->review_text; }?>
                       </div>
                     </div>
-                    <div class="row"><hr></div>
         <?php     }
               } ?>
       </div>
     </div>
+
+    <!-- Add Review Modal -->
     <div class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-labelledby="addReviewLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
             <h5 class="modal-title" id="addReviewLabel">Add Review</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
           </div>
           <div class="modal-body">
             <form class="signup-form" id="reviewForm" action="" method="POST">
