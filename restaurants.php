@@ -4,37 +4,46 @@ session_start();
     include 'inc/header.php';
     include 'inc/footer.php';
     include 'app/connect.php';
+    include 'inc/models/RestaurantObj.php';
+
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
   if(isset($_POST['search'])){
     $loc = mysqli_real_escape_string($conn, $_POST['city']);
-    $sql = "SELECT restaurant_name FROM Restaurant WHERE city ='$loc'";//query for restaurants
+    $sql = "SELECT restaurant_name, restaurant_id FROM Restaurant WHERE city ='$loc'";//query for restaurants
     $csn = mysqli_real_escape_string($conn, $_POST['cuisine']);
     $csn_marker = 0;
     $rest_marker = 0;
-    if(!empty($csn)){
-      $sql2 = "SELECT * FROM Cuisine WHERE cuisine_name='$csn'";
-      $result2 = mysqli_query($conn, $sql2);                    // result2 holds cuisine search
-      if(mysqli_num_rows($result2) < 1){
-          $error = "Try another cuisine. Displaying all restaurants instead.";
-      } else{
-        $sql = "SELECT restaurant_name FROM Restaurant, Cuisine, Restaurant_Type WHERE city ='$loc'
-                  AND Restaurant.restaurant_id = Restaurant_Type.restaurant_id
-                  AND Restaurant_Type.cuisine_id = Cuisine.cuisine_id
-                  AND cuisine_name = '$csn'";
-            //update query for cuisine specifications
-            $csn_marker = 1;
-      }
+    if(empty($loc)){
+      $error = "Please provide a location";
     }
-    $result = mysqli_query($conn, $sql);
-    $restaurants = "";
-    if(mysqli_num_rows($result) > 0){
-      $rest_marker = 1;
-      while($row = mysqli_fetch_assoc($result)){
-        $restaurants .= $row["restaurant_name"] . "<br>";
+    else{
+      if(!empty($csn)){
+        $sql2 = "SELECT * FROM Cuisine WHERE cuisine_name='$csn'";
+        $result2 = mysqli_query($conn, $sql2);                    // result2 holds cuisine search
+        if(mysqli_num_rows($result2) < 1){
+            $error = "Try another cuisine. Displaying all restaurants instead.";
+        } else{
+          $sql = "SELECT restaurant_name, Restaurant.restaurant_id FROM Restaurant, Cuisine, Restaurant_Type WHERE city ='$loc'
+                    AND Restaurant.restaurant_id = Restaurant_Type.restaurant_id
+                    AND Restaurant_Type.cuisine_id = Cuisine.cuisine_id
+                    AND cuisine_name = '$csn'";
+              //update query for cuisine specifications
+              $csn_marker = 1;
+        }
       }
-    } else{
-      $error = "No results found.";
-      $csn_marker = 0;
+      $restaurants = [];
+      $rest_result = mysqli_query($conn, $sql);
+      if(mysqli_num_rows($rest_result) > 0){
+          $rest_marker = 1;
+          while($row = mysqli_fetch_assoc($rest_result)){
+              $rest_id = $row['restaurant_id'];
+              $restaurant = new Restaurant($rest_id, $conn);
+              array_push($restaurants, $restaurant);
+          }
+      } else{
+        $error = "No results found.";
+        $csn_marker = 0;
+      }
     }
   }
 } else {
@@ -62,6 +71,18 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           if(isset($csn) && $csn_marker == 0 && $rest_marker){ echo "All<br>"; }
           elseif($rest_marker && $csn_marker == 1){ echo $csn."<br>"; } ?>
       </div>
-      <div><?php if(isset($restaurants)){ echo "<br>".$restaurants; } ?></div>
+      <div class="row"><hr></div>
+      <?php
+          if(count($restaurants)>0){
+            foreach($restaurants as &$r){?>
+        <div class="row">
+            <?php echo
+                  '<a href="restaurant.php?restid=' . $r->restaurant_id . '">' .
+                      '<div>' . $r->restaurant_name . '</div>' .
+                  '</a>';
+            ?>
+        </div>
+        <div class="row"><hr></div>
+      <?php }} ?>
     </div>
   </div>
