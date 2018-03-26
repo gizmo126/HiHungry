@@ -51,7 +51,7 @@ header('Content-Type: text/html; charset=ISO-8859-1'); // cause special chars in
               <a href="/restaurants.php">Restaurants</a>
             </li>
             <li <?php if($_SERVER['SCRIPT_NAME']=="/users.php") { ?> class="nav-item active" <?php } ?>>
-              <a href="#users">Users</a>
+              <a href="/users.php">Users</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
