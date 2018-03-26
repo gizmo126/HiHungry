@@ -13,12 +13,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       $error = "Please enter a name";
     }
     else{
-    	$sql = "SELECT * FROM User WHERE Fname='$firstname' AND Lname = '$lastname'";  //Queries on both
+    	$sql = "SELECT * FROM User WHERE Fname LIKE '%$firstname%' AND Lname LIKE '%$lastname%'";  //Queries on both
       if(!empty($firstname) && empty($lastname)){ //only last name
-        $sql = "SELECT * FROM User WHERE Fname='$firstname'";
+        $sql = "SELECT * FROM User WHERE Fname LIKE '%$firstname%'";
         }
       if(empty($firstname) && !empty($lastname)){ //only first name
-      	$sql = "SELECT * FROM User WHERE Lname='$lastname'";
+      	$sql = "SELECT * FROM User WHERE Lname LIKE '%$lastname%'";
       }
       $users = [];
       $user_result = mysqli_query($conn, $sql);
