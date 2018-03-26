@@ -42,7 +42,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     <div class="starter-template">
       <h1>Users</h1>
       <div class="text-center">
-          <h1>Who would you like to look up?</h1>
+          <h2>Who would you like to look up?</h2>
           <br/>
           <form class="signup-form" action ="" method="POST">
             <div class="form-group">
