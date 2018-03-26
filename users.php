@@ -13,7 +13,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       $error = "Please enter a name";
     }
     else{
-    	$sql = "SELECT * FROM User WHERE Fname='$firstname' AND Lname = '$lastname'"; 
+    	$sql = "SELECT * FROM User WHERE Fname='$firstname' AND Lname = '$lastname'";  //Queries on both
       if(!empty($firstname) && empty($lastname)){ //only last name
         $sql = "SELECT * FROM User WHERE Fname='$firstname'";
         }
@@ -24,10 +24,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       $user_result = mysqli_query($conn, $sql);
       if(mysqli_num_rows($user_result) > 0){
           while($row = mysqli_fetch_assoc($user_result)){
-              $username = $row['user_name'];
+              $username = $row['user_name']; 
               $firstname = $row['Fname'];
               $lastname = $row['Lname'];
-              array_push($users, $username);
+              array_push($users, $username); //user object prob needed 
           }
       } else{
         $error = "No Users Found.";
@@ -58,7 +58,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           if(count($users)>0){
             foreach($users as & $u){?>
         <div class="row">
-        	<?php echo $u;
+        	<?php echo $u; //add link to user's profile page
             ?>
         </div>
         <div class="row"><hr></div>
