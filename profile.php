@@ -10,9 +10,11 @@ session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     // get user_id
     $user = $_SESSION['user'];
-    $user_sql = "SELECT user_id FROM User WHERE user_name='$user'";
+    $user_sql = "SELECT user_id, profile_url FROM User WHERE user_name='$user'";
     $user_result = mysqli_query($conn, $user_sql);
-    $user_id = mysqli_fetch_assoc($user_result)["user_id"];
+    $row = mysqli_fetch_assoc($user_result);
+    $user_id = $row["user_id"];
+    $url = $row["profile_url"];
 
     // get reviews for that user
     $reviews_sql = "SELECT * FROM Reviews WHERE user_id='$user_id'";
@@ -41,6 +43,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     <div class="starter-template">
       <h1>Profile</h1>
       <p class="lead">Hi <?php if(isset($user)){ echo $user; } ?></p>
+      <?php
+          $imageData = base64_encode(file_get_contents($url));
+          echo '<img src="data:image/jpeg;base64,'.$imageData.'" class="img-thumbnail">';
+      ?>
       <div class="row">
         <h2> Reviews: <?php echo $num; ?> </h2>
       </div>
