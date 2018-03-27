@@ -26,6 +26,14 @@
           }
       }
 
+      $num_reviews_sql = "SELECT restaurant_id, COUNT(*) FROM `Reviews` WHERE restaurant_id = $restid GROUP BY `restaurant_id`";
+      $num_result = mysqli_query($conn, $num_reviews_sql);
+      $num = 0;
+      if(mysqli_num_rows($num_result) > 0){
+        $row1 = mysqli_fetch_assoc($num_result);
+        $num = $row1['COUNT(*)'];
+      }
+
       // Add New Review
       if(isset($_POST['review'])){
           // get user_id
@@ -93,7 +101,7 @@
       </div>
       <div>
         <div class="row">
-          <h2> Reviews </h2>
+          <h2> Reviews: <?php echo $num ?> </h2>
           <button type="button" data-toggle="modal" data-target="#addReviewModal" class="btn btn-primary">Add Review +</button>
         </div>
         <?php if(count($reviews) == 0){ ?>
