@@ -44,8 +44,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       <h1>Profile</h1>
       <p class="lead">Hi <?php if(isset($user)){ echo $user; } ?></p>
       <?php
+        if(!empty($url)){
           $imageData = base64_encode(file_get_contents($url));
           echo '<img src="data:image/jpeg;base64,'.$imageData.'" class="img-thumbnail">';
+        }
       ?>
       <div class="row">
         <h2> Reviews: <?php echo $num; ?> </h2>
