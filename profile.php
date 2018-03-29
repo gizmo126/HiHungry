@@ -46,7 +46,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       <?php
         if(!empty($url)){
           $imageData = base64_encode(file_get_contents($url));
-          echo '<img src="data:image/jpeg;base64,'.$imageData.'" class="img-thumbnail">';
+          echo '<img src="data:image/jpeg;base64,'.$imageData.'" class="img-thumbnail" style="width:25%">';
+        } else {
+          echo '<img src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png" class="img-thumbnail" style="width:25%">';
         }
       ?>
       <div class="row">

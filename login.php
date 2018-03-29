@@ -32,6 +32,9 @@ elseif(isset($_POST['signup'])){
 		include_once 'app/connect.php';
 		$unme = mysqli_real_escape_string($conn, $_POST['uname_signup']);
 		$upwd = mysqli_real_escape_string($conn, $_POST['psw_signup']);
+    $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
+    $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
+    $profile_photo = mysqli_real_escape_string($conn, $_POST['profile_photo']);
 		if(empty($unme) || empty($upwd)){
 		}
 		else {
@@ -41,7 +44,7 @@ elseif(isset($_POST['signup'])){
 					$error1 = "Username has been taken.";
 	      	$error2 = "Username has been taken.";
 	      } else {
-					$sql2 = "INSERT INTO User (user_name, password) VALUES ('$unme', '$upwd')";
+					$sql2 = "INSERT INTO User (user_name, password, Lname, Fname, profile_url) VALUES ('$unme', '$upwd', '$last_name', '$first_name', '$profile_photo')";
 					$result = mysqli_query($conn, $sql2);
           $success = "Account created, please sign in.";
 				}
@@ -112,8 +115,20 @@ ob_flush();
 							</div>
 							<div class="form-group">
 									<label class="form-login-label" for="psw"><b>Password</b></label>
-									<input type="password" class="form-login-txtbox" placeholder=" Enter Password" name="psw_signup" required>
+									<input type="text" class="form-login-txtbox" placeholder=" Enter Password" name="psw_signup" required>
 							</div>
+              <div class="form-group">
+                  <label class="form-login-label" for="psw"><b>First Name</b></label>
+                  <input type="text" class="form-login-txtbox" placeholder=" First Name" name="first_name" required>
+              </div>
+              <div class="form-group">
+                  <label class="form-login-label" for="psw"><b>Last Name</b></label>
+                  <input type="text" class="form-login-txtbox" placeholder=" First Name" name="last_name" required>
+              </div>
+              <div class="form-group">
+                  <label class="form-login-label" for="psw"><b>Profile Photo</b></label>
+                  <input type="text" class="form-login-txtbox" placeholder=" Profile Picture URL" name="profile_photo" required>
+              </div>
 							<div class="modal-footer">
 								<button name="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 								<button name="signup" type="signup" class="btn btn-primary">Sign Up</button>
