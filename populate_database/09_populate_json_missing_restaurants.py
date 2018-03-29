@@ -1,5 +1,6 @@
 import requests
 import json
+from config import API_KEY
 
 # 3/23 - this is a deadend these restaurant_ids aren't real lol, checked with Zomato API
 
@@ -13,7 +14,7 @@ def queryFromMissingID():
         try:
             params = {'res_id' : rest}
             url = "https://developers.zomato.com/api/v2.1/restaurant"
-            response = requests.get(url, params=params, headers={"user-key": "f14492965aae25bb9351ce35aca9201a"})
+            response = requests.get(url, params=params, headers={"user-key": API_KEY})
             restaurant_api = json.loads(response.text)
             print(restaurant_api)
         except Exception as e:

@@ -1,5 +1,6 @@
 import requests
 import json
+from config import API_KEY
 
 # pip install requests
 # This script queries the Zomato API with our selected city ID's and obtains 20 restaurants from each city
@@ -12,7 +13,7 @@ def queryFromCities():
         try:
             params = {'entity_id' : city, 'entity_type' : 'city', 'country_id': 216}
             url = "https://developers.zomato.com/api/v2.1/search?&entity_type=city"
-            response = requests.get(url, params=params, headers={"user-key": "API_KEY"})
+            response = requests.get(url, params=params, headers={"user-key": API_KEY})
             restaurants = json.loads(response.text)
             for r in (restaurants['restaurants']):
                 restaurants_in_cities.append(r['restaurant'])

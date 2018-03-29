@@ -1,5 +1,6 @@
 import requests
 import json
+from config import API_KEY
 
 # This script queries the Zomato API with city ID's from the previously obtained restaurant.json file
 # It filters out zip codes that are not located within the US
@@ -18,7 +19,7 @@ for rest in restaurants:
         if(len(rest['location']['zipcode']) >= 5):
             params = {'res_id' : rest_id}
             url = "https://developers.zomato.com/api/v2.1/reviews"
-            response = requests.get(url, params=params, headers={"user-key": "f14492965aae25bb9351ce35aca9201a"})
+            response = requests.get(url, params=params, headers={"user-key": API_KEY})
             reviews = json.loads(response.text)
             for r in reviews['user_reviews']:
                 r['rest_id'] = rest_id

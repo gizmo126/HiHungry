@@ -1,5 +1,6 @@
 import requests
 import json
+from config import API_KEY
 
 # This script queries the Zomato API with our selected city ID's and obtains possible cuisines from each city
 # Then results are ouputed into cuisines.json in order to populated our database with 6_populate_db_cuisines.py
@@ -11,7 +12,7 @@ def queryFromCities():
         try:
             params = {'city_id' : city}
             url = "https://developers.zomato.com/api/v2.1/cuisines?"
-            response = requests.get(url, params=params, headers={"user-key": "f14492965aae25bb9351ce35aca9201a"})
+            response = requests.get(url, params=params, headers={"user-key": API_KEY})
             cuisines = json.loads(response.text)
             for c in (cuisines['cuisines']):
                 if cuisines_in_cities.count(c) == 0:

@@ -1,16 +1,17 @@
 import MySQLdb
 import json
 import random
+from config import DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE
 
 # This script populates a MySQL database with possible cuisines data from the cuisines.json
 
 def dbconnect():
     try:
         db = MySQLdb.connect(
-            host='cpanel3.engr.illinois.edu',
-            user='gizmohihungry_admin',
-            passwd='password123',
-            db='gizmohihungry_test'
+            host = DB_HOST,
+            user = DB_USER,
+            passwd = DB_PASSWORD,
+            db = DB_DATABASE
         )
         print("connected to db")
     except Exception as e:

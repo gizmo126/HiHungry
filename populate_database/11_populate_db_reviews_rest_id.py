@@ -2,16 +2,17 @@ import requests
 import json
 import MySQLdb
 import random
+from config import DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE
 
 # 3/23 - because Reviews has restaurant_ids that are imaginary, going to reassign them from our list of existing restaurant_ids
 
 def dbconnect():
     try:
         db = MySQLdb.connect(
-            host='cpanel3.engr.illinois.edu',
-            user='gizmohihungry_admin',
-            passwd='password123',
-            db='gizmohihungry_test'
+            host = DB_HOST,
+            user = DB_USER,
+            passwd = DB_PASSWORD,
+            db = DB_DATABASE
         )
         print("connected to db")
     except Exception as e:
