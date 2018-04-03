@@ -23,6 +23,7 @@ for rest in restaurants:
             reviews = json.loads(response.text)
             for r in reviews['user_reviews']:
                 r['rest_id'] = rest_id
+                print r['rest_id']
                 reviews_list.append(r)
                 count += 1
     except Exception as e:
