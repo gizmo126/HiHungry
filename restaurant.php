@@ -121,7 +121,7 @@
                     </div>
                     <div class="row">
                       <div class="col-...">
-                          <?php if(isset($rev->rating)){ echo $rev->review_text; }?>
+                          <?php if(isset($rev->rating)){ echo mb_convert_encoding($rev->review_text, "HTML-ENTITIES", "UTF-8"); }?>
                       </div>
                     </div>
         <?php     }
