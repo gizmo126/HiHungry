@@ -110,7 +110,11 @@
                   foreach($reviews as &$rev){?>
                     <div class="row"><hr></div>
                     <div class="row">
-                        <div class="col-6 col-md-8"><?php if(isset($rev->user_name)){ echo $rev->user_name; }?></div>
+                        <?php echo
+                            '<a href="user.php?userid=' . $rev->user_id . '">' .
+                                '<div class="col-6 col-md-8">' . $rev->user_name . '</div>' .
+                            '</a>';
+                        ?>
                         <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo $rev->rating; }?></div>
                         <?php if($rev->user_name == $_SESSION['user']){
                                   echo '<div class="col-6 col-md-1">
