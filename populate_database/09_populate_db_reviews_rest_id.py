@@ -4,6 +4,7 @@ import MySQLdb
 import random
 from config import DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE
 
+# 4/2 - DO NOT RUN THIS, REVIEWS HAS BEEN FIXED
 # 3/23 - because Reviews has restaurant_ids that are imaginary, going to reassign them from our list of existing restaurant_ids
 
 def dbconnect():
@@ -41,14 +42,14 @@ for idx in range(0, 1401):
         if rest_ids.count(rows[0][2]) == 0:
             cursor = db.cursor()
             random_rest = rest_ids[random.randint(0, len(rest_ids) - 1)]
-            try:
-                print "updating review id:", idx
-                cursor.execute("UPDATE Reviews SET restaurant_id=%s WHERE review_id=%s", (random_rest, idx))
-            except Exception as e:
-                print(e)
-                cursor.close()
-            finally:
-                cursor.close()
+            # try:
+            #     print "updating review id:", idx
+            #     cursor.execute("UPDATE Reviews SET restaurant_id=%s WHERE review_id=%s", (random_rest, idx))
+            # except Exception as e:
+            #     print(e)
+            #     cursor.close()
+            # finally:
+            #     cursor.close()
 
 
 # close the database connection

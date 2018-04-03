@@ -4,7 +4,7 @@ import random
 import re
 from config import DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE
 
-# updated 4-2: fixed ratings and review text cutoff
+# Updated 4-2: fixed ratings and review text cutoff
 # This script populates a MySQL database with review data from the reviews.json file
 # The review data is from the Zomato API and outputted into a json file by populate_json_review.py
 
