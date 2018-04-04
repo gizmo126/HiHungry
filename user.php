@@ -20,6 +20,10 @@
       $Fname = $row['Fname'];
       $Lname = $row['Lname'];
       $url = $row['profile_url'];
+      $curr_user = $_SESSION['user'];
+      if($curr_user == $user_name){
+        header('Location: profile.php');
+      }
 
       // get reviews for that user
       $reviews_sql = "SELECT * FROM Reviews WHERE user_id='$userid'";

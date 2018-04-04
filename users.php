@@ -4,6 +4,7 @@ session_start();
     include 'inc/header.php';
     include 'inc/footer.php';
     include 'app/connect.php';
+    include 'inc/models/UserObj.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
   if(isset($_POST['search'])){
@@ -24,10 +25,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       $user_result = mysqli_query($conn, $sql);
       if(mysqli_num_rows($user_result) > 0){
           while($row = mysqli_fetch_assoc($user_result)){
-              $username = $row['user_name']; 
+              $username = $row['user_name'];
               $firstname = $row['Fname'];
               $lastname = $row['Lname'];
-              array_push($users, $username); //user object prob needed 
+              $user_id = $row['user_id'];
+              $user = new User($user_id, $username, $firstname, $lastname);
+              array_push($users, $user); //user object prob needed
           }
       } else{
         $error = "No Users Found.";
@@ -58,7 +61,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           if(count($users)>0){
             foreach($users as & $u){?>
         <div class="row">
-        	<?php echo $u; //add link to user's profile page
+            <?php
+                  echo  $u->Fname.' '.$u->Lname.
+
+                  '<a href="user.php?userid=' . $u->user_id . '">' .
+                      '<div>' . $u->user_name . '</div>' .
+                  '</a>';
             ?>
         </div>
         <div class="row"><hr></div>
