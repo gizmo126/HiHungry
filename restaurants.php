@@ -81,8 +81,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             <div class="row">
               <div class="col-6 col-md-4">
                 <?php
-                  if(!empty($r->img_url)){
-                    $imageData = base64_encode(file_get_contents($r->img_url));
+                  if(!empty($r)){
+                    $imageData = base64_encode(file_get_contents("img/" . $r->restaurant_id . ".jpg"));
                     echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
                   } else {
                     echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';

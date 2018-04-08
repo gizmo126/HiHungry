@@ -61,13 +61,26 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           if(count($users)>0){
             foreach($users as & $u){?>
         <div class="row">
+          <div class="col-6 col-md-2"></div>
+          <div class="col-6 col-md-4">
             <?php
-                  echo  $u->Fname.' '.$u->Lname.
-
-                  '<a href="user.php?userid=' . $u->user_id . '">' .
-                      '<div>' . $u->user_name . '</div>' .
-                  '</a>';
+              if(!empty($u)){
+                $imageData = base64_encode(file_get_contents("img/" . $u->user_id . ".jpg"));
+                echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+              } else {
+                echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
+              }
             ?>
+          </div>
+          <div class="col-6 col-md-2">
+            <?php
+                  echo '<h4>' . $u->Fname.' '.$u->Lname. '</h4>';
+                  echo '<a href="user.php?userid=' . $u->user_id . '">' .
+                          '<div>' . $u->user_name . '</div>' .
+                          '</a>';
+            ?>
+          </div>
+          <div class="col-6 col-md-2"></div>
         </div>
         <div class="row"><hr></div>
       <?php }} ?>
