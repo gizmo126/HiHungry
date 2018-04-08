@@ -75,17 +75,23 @@
                 foreach($reviews as &$rev){?>
                   <div class="row"><hr></div>
                   <div class="row">
-                      <div class="col-6 col-md-4">
-                        <?php
-                          $r = new Restaurant($rev->restaurant_id, $conn);
-                          if(!empty($r->img_url)){
-                            $imageData = base64_encode(file_get_contents($r->img_url));
-                            echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
-                          } else {
-                            echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
-                          }
-                        ?>
-                      </div>
+                    <div class="col-6 col-md-4">
+                      <?php
+                        $rest_sql = "SELECT Restaurant_Pic_url FROM Restaurant WHERE restaurant_id ='$rev->restaurant_id'";
+                        $rest_query = mysqli_query($conn, $rest_sql);
+                        $rest_results = mysqli_fetch_assoc($rest_query);
+                        $temp = [];
+                        foreach($rest_results as &$row) {
+                          array_push($temp, $row);
+                        }
+                        if(!empty($temp)){
+                          $imageData = base64_encode(file_get_contents($temp[0]));
+                          echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                        } else {
+                          echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
+                        }
+                      ?>
+                    </div>
                       <div class="col-6 col-md-8">
                         <div class="row">
                           <?php echo
