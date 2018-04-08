@@ -5,7 +5,7 @@
   include 'inc/footer.php';
   include 'app/connect.php';
   include 'inc/models/ReviewObj.php';
-  include 'inc/deleteReviews.php';
+  include 'inc/models/RestaurantObj.php';
 
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     if(isset($_GET['userid'])) {
@@ -75,57 +75,33 @@
                 foreach($reviews as &$rev){?>
                   <div class="row"><hr></div>
                   <div class="row">
-                      <?php echo
-                            '<a href="restaurant.php?restid=' . $rev->restaurant_id . '">' .
-                                '<div class="col-6 col-md-8">' . $rev->restaurant_name . '</div>' .
-                            '</a>';
-                      ?>
-                      <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo "Rating: " . $rev->rating; }?></div>
-                      <div class="col-6 col-md-1">
-                        <button data-toggle="modal" data-target="#deleteReviewModal" data-id="<?php echo $rev->review_id; ?>" class="btn btn-default">x</button>
+                      <div class="col-6 col-md-4">
+                        <?php
+                          $r = new Restaurant($rev->restaurant_id, $conn);
+                          if(!empty($r->img_url)){
+                            $imageData = base64_encode(file_get_contents($r->img_url));
+                            echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                          } else {
+                            echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
+                          }
+                        ?>
                       </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-...">
-                        <?php if(isset($rev->rating)){ echo mb_convert_encoding($rev->review_text, "HTML-ENTITIES", "UTF-8"); }?>
-                    </div>
+                      <div class="col-6 col-md-8">
+                        <div class="row">
+                          <?php echo
+                            '<a href="restaurant.php?restid=' . $rev->restaurant_id . '">' .
+                              '<div class="col-6 col-md-6">' . $rev->restaurant_name . '</div>' .
+                            '</a>';
+                          ?>
+                          <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo "Rating: " . $rev->rating; }?></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6 col-md-6">
+                            <?php if(isset($rev->rating)){ echo mb_convert_encoding($rev->review_text, "HTML-ENTITIES", "UTF-8"); }?>
+                          </div>
+                        </div>
+                      </div>
                   </div>
       <?php     }
             } ?>
     </div>
-
-    <!-- Add Review Modal -->
-    <div class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-labelledby="addReviewLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-            <h5 class="modal-title" id="addReviewLabel">Add Review</h5>
-          </div>
-          <div class="modal-body">
-            <form class="signup-form" id="reviewForm" action="" method="POST">
-              <div class="form-group">
-                <label for="rating">Rating:</label>
-                <select class="form-control" name="selected" required>
-                  <option disabled selected value> -- Select a Rating -- </option>
-                  <option>5</option>
-                  <option>4</option>
-                  <option>3</option>
-                  <option>2</option>
-                  <option>1</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="comment">Review:</label>
-                <textarea class="form-control" rows="4" name="text" placeholder="Please tell us about your experience." required></textarea>
-              </div>
-              <div class="modal-footer">
-                <button name="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button name="review" type="review" class="btn btn-primary">Add</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>

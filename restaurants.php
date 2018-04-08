@@ -50,6 +50,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     header('Location: login.php');
 }
 ?>
+<style>
+  <?php include 'css/restaurant.css'; ?>
+</style>
   <div class="container">
     <div class="starter-template">
       <h1>Restaurants</h1>
@@ -75,13 +78,39 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       <?php
           if(count($restaurants)>0){
             foreach($restaurants as &$r){?>
-        <div class="row">
-            <?php echo
-                  '<a href="restaurant.php?restid=' . $r->restaurant_id . '">' .
-                      '<div>' . $r->restaurant_name . '</div>' .
-                  '</a>';
-            ?>
-        </div>
+            <div class="row">
+              <div class="col-6 col-md-4">
+                <?php
+                  if(!empty($r->img_url)){
+                    $imageData = base64_encode(file_get_contents($r->img_url));
+                    echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                  } else {
+                    echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
+                  }
+                ?>
+              </div>
+              <div class="col-6 col-md-4">
+                <?php echo
+                      '<a href="restaurant.php?restid=' . $r->restaurant_id . '">' .
+                          '<div>' . $r->restaurant_name . '</div>' .
+                      '</a>';
+                ?>
+              </div>
+              <div class="col-6 col-md-4">
+                  <div class="row" id="stars">
+                    <?php $counter = 0;
+                          while($counter < $r->rating){
+                              echo '<span class="fa fa-star checked"></span>';
+                              $counter++;
+                          }
+                          while($counter < 5){
+                              echo '<span class="fa fa-star"></span>';
+                              $counter++;
+                          }
+                    ?>
+                  </div>
+              </div>
+            </div>
         <div class="row"><hr></div>
       <?php }} ?>
     </div>

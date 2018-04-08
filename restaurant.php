@@ -70,6 +70,14 @@
   <div class="container">
     <div class="starter-template">
       <h1><?php echo $rest->restaurant_name; ?></h1>
+      <?php
+        if(!empty($rest->img_url)){
+          $imageData = base64_encode(file_get_contents($rest->img_url));
+          echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:50%">';
+        } else {
+          echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
+        }
+      ?>
       <div class="text-center">
           <div class="row"><?php if(isset($rest->address)){ echo $rest->address; }?></div>
           <div class="row"><?php if(isset($rest->pricerange)){ for($x = 0; $x < $rest->pricerange; $x++){ echo "$"; } } ?></div>
@@ -110,23 +118,29 @@
                   foreach($reviews as &$rev){?>
                     <div class="row"><hr></div>
                     <div class="row">
-                        <?php echo
-                            '<a href="user.php?userid=' . $rev->user_id . '">' .
-                                '<div class="col-6 col-md-8">' . $rev->user_name . '</div>' .
-                            '</a>';
-                        ?>
-                        <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo $rev->rating; }?></div>
-                        <?php if($rev->user_name == $_SESSION['user']){
-                                  echo '<div class="col-6 col-md-1">
-                                          <button data-toggle="modal" data-target="#deleteReviewModal" data-id="' . $rev->review_id . '" class="btn btn-default">x</button>
-                                        </div>';
-                                  }
-                        ?>
-                    </div>
-                    <div class="row">
-                      <div class="col-...">
-                          <?php if(isset($rev->rating)){ echo mb_convert_encoding($rev->review_text, "HTML-ENTITIES", "UTF-8"); }?>
-                      </div>
+                        <div class="col-6 col-md-4">
+                        </div>
+                        <div class="col-6 col-md-8">
+                          <div class="row">
+                            <?php echo
+                                '<a href="user.php?userid=' . $rev->user_id . '">' .
+                                    '<div class="col-6 col-md-6">' . $rev->user_name . '</div>' .
+                                '</a>';
+                            ?>
+                            <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo "Rating: " . $rev->rating; }?></div>
+                              <?php if($rev->user_name == $_SESSION['user']){
+                                      echo '<div class="col-6 col-md-1">
+                                              <button data-toggle="modal" data-target="#deleteReviewModal" data-id="' . $rev->review_id . '" class="btn btn-default">x</button>
+                                            </div>';
+                                    }
+                              ?>
+                          </div>
+                          <div class="row">
+                            <div class="col-6 col-md-6">
+                              <?php if(isset($rev->rating)){ echo mb_convert_encoding($rev->review_text, "HTML-ENTITIES", "UTF-8"); }?>
+                            </div>
+                          </div>
+                        </div>
                     </div>
         <?php     }
               } ?>

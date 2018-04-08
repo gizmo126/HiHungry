@@ -5,6 +5,7 @@ session_start();
     include 'inc/footer.php';
     include 'app/connect.php';
     include 'inc/models/ReviewObj.php';
+    include 'inc/models/RestaurantObj.php';
     include 'inc/deleteReviews.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
@@ -60,20 +61,35 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 foreach($reviews as &$rev){?>
                   <div class="row"><hr></div>
                   <div class="row">
-                      <?php echo
-                            '<a href="restaurant.php?restid=' . $rev->restaurant_id . '">' .
-                                '<div class="col-6 col-md-8">' . $rev->restaurant_name . '</div>' .
-                            '</a>';
-                      ?>
-                      <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo "Rating: " . $rev->rating; }?></div>
-                      <div class="col-6 col-md-1">
-                        <button data-toggle="modal" data-target="#deleteReviewModal" data-id="<?php echo $rev->review_id; ?>" class="btn btn-default">x</button>
+                      <div class="col-6 col-md-4">
+                        <?php
+                          $r = new Restaurant($rev->restaurant_id, $conn);
+                          if(!empty($r->img_url)){
+                            $imageData = base64_encode(file_get_contents($r->img_url));
+                            echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                          } else {
+                            echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
+                          }
+                        ?>
                       </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-...">
-                        <?php if(isset($rev->rating)){ echo mb_convert_encoding($rev->review_text, "HTML-ENTITIES", "UTF-8"); }?>
-                    </div>
+                      <div class="col-6 col-md-8">
+                        <div class="row">
+                          <?php echo
+                            '<a href="restaurant.php?restid=' . $rev->restaurant_id . '">' .
+                              '<div class="col-6 col-md-6">' . $rev->restaurant_name . '</div>' .
+                            '</a>';
+                          ?>
+                          <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo "Rating: " . $rev->rating; }?></div>
+                          <div class="col-6 col-md-1">
+                            <button data-toggle="modal" data-target="#deleteReviewModal" data-id="<?php echo $rev->review_id; ?>" class="btn btn-default">x</button>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6 col-md-6">
+                            <?php if(isset($rev->rating)){ echo mb_convert_encoding($rev->review_text, "HTML-ENTITIES", "UTF-8"); }?>
+                          </div>
+                        </div>
+                      </div>
                   </div>
       <?php     }
             } ?>

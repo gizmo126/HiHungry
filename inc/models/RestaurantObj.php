@@ -13,6 +13,7 @@ Class Restaurant {
     public $votes;
     public $cuisine_ids;
     public $cuisine_names;
+    public $img_url;
 
     public function __construct($restaurant_id, $conn) {
         $rest_sql = "SELECT * FROM Restaurant WHERE restaurant_id ='$restaurant_id'";
@@ -27,6 +28,7 @@ Class Restaurant {
         $this->delivers = $rest_results["delivers"];
         $this->rating = $rest_results["rating"];
         $this->votes = $rest_results["votes"];
+        $this->img_url = $rest_results["Restaurant_Pic_url"];
 
         // get cuisine id
         $this->cuisine_ids = [];
