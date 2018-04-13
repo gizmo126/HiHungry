@@ -17,6 +17,30 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $user_id = $row["user_id"];
     $url = $row["profile_url"];
 
+
+     $friends_sql = "SELECT * FROM Friend, User WHERE Friend.user1_id='$userid' AND User.user_id=Friend.user2_id";
+      $friends_result = mysqli_query($conn, $reviews_sql);
+      $friends = [];
+      if(mysqli_num_rows($friends_result) > 0){
+        while($row = mysqli_fetch_assoc($friends_result)){
+              $username = $row['user_name'];
+              $firstname = $row['Fname'];
+              $lastname = $row['Lname'];
+              $user_id = $row['user_id'];
+              $friend = new User($user_id, $username, $firstname, $lastname);
+          array_push($friends, $friend);
+        }
+      }
+
+
+      $num_friends_sql = "SELECT user1_id, COUNT(*) FROM `Friend` WHERE user1_id = $userid GROUP BY `user1_id`";
+      $num_friends_result = mysqli_query($conn, $num_friends_sql);
+      $num_friends = 0;
+      if(mysqli_num_rows($num_friends_result) > 0){
+        $row2 = mysqli_fetch_assoc($num_friends_result);
+        $num_friends = $row2['COUNT(*)'];
+      }
+
     // get reviews for that user
     $reviews_sql = "SELECT * FROM Reviews WHERE user_id='$user_id'";
     $reviews_result = mysqli_query($conn, $reviews_sql);
@@ -52,6 +76,39 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           echo '<img src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png" class="img-thumbnail" style="width:25%">';
         }
       ?>
+           <div class ="row">
+        <h2> Friends: <?php echo $num_friends; ?> </h2>
+      </div>
+      <?php if($num_friends ==0) {?>
+                <h4> No Friends Added! <h4>
+      <?php } else {
+                foreach($friends as &$fd){?>
+                  <div class="row"><hr></div>
+                  <div class="row">
+                      <div class="col-6 col-md-4">
+                        <?php 
+                          if(!empty($fd)){
+                          $imageData = base64_encode(file_get_contents("img/" . $fd->user_id2 . ".jpg"));
+                          echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                          } else {
+                            echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
+                          }
+                        ?>
+
+            </div>
+          <div class="col-6 col-md-2">
+            <?php
+                  echo '<h4>' . $fd->Fname.' '.$fd->Lname. '</h4>';
+                  echo '<a href="user.php?userid=' . $u->user_id . '">' .
+                          '<div>' . $u->user_name . '</div>' .
+                          '</a>';
+            ?>
+          </div>
+             </div>
+
+      }
+    }
+
       <div class="row">
         <h2> Reviews: <?php echo $num; ?> </h2>
       </div>
