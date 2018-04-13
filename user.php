@@ -96,10 +96,10 @@
       <div class ="row">
         <h2> Friends: <?php echo $num_friends; ?> </h2>
       </div>
-      <?php if($num_friends ==0) {?>
+      <?php if($num_friends ==0) { ?>
                 <h4> No Friends Added! <h4>
       <?php } else {
-                foreach($friends as &$fd){?>
+                foreach($friends as &$fd){ ?>
                   <div class="row"><hr></div>
                   <div class="row">
                       <div class="col-6 col-md-4">
@@ -120,10 +120,11 @@
                           '<div>' . $fd->user_name . '</div>' .
                           '</a>';
             ?>
+            </div>
+        </div>
           <?php }
         } ?>
-        </div>
-    </div>
+
 
       <div class="row">
         <h2> Reviews: <?php echo $num; ?> </h2>

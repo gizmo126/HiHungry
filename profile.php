@@ -104,13 +104,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                           '<div>' . $fd->user_name . '</div>' .
                           '</a>';
             ?>
-          <?php   }
-          }?>
-
+            </div>
           </div>
-      </div>
-
-
+        <?php   }
+        }?>
 
       <div class="row">
         <h2> Reviews: <?php echo $num; ?> </h2>
