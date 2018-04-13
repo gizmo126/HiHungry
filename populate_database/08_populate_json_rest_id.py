@@ -34,6 +34,7 @@ results = cursor.fetchall()
 for row in results:
     if(restaurant_ids.count(row[0]) == 0):
         restaurant_ids.append(row[0])
+        print row[0]
 
 cursor.close
 
