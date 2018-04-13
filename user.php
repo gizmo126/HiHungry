@@ -25,8 +25,8 @@
         header('Location: profile.php');
       }
 
-      $friends_sql = "SELECT * FROM Friend, User WHERE Friend.user1_id='$userid' AND User.user_id=Friend.user2_id"      
-      $friends_result = mysqli_query($conn, $reviews_sql);
+      $friends_sql = "SELECT * FROM Friend, User WHERE Friend.user1_id='$userid' AND User.user_id=Friend.user2_id";      
+      $friends_result = mysqli_query($conn, $friends_sql);
       $friends = [];
       if(mysqli_num_rows($friends_result) > 0){
         while($row = mysqli_fetch_assoc($friends_result)){
@@ -118,12 +118,11 @@
                           '<div>' . $u->user_name . '</div>' .
                           '</a>';
             ?>
-          </div>
+          }
+        }
         </div>
-      }
+    </div>
 
-
-      }
       <div class="row">
         <h2> Reviews: <?php echo $num; ?> </h2>
       </div>
