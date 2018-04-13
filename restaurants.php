@@ -7,6 +7,12 @@ session_start();
     include 'inc/models/RestaurantObj.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+  $user = $_SESSION['user'];
+  $user_sql = "SELECT user_id, profile_url FROM User WHERE user_name='$user'";
+  $user_result = mysqli_query($conn, $user_sql);
+  $row = mysqli_fetch_assoc($user_result);
+  $user_id = $row["user_id"];
+
   if(isset($_POST['search'])){
     $loc = mysqli_real_escape_string($conn, $_POST['city']);
     $sql = "SELECT restaurant_name, restaurant_id FROM Restaurant WHERE city ='$loc'";//query for restaurants
@@ -23,7 +29,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         if(mysqli_num_rows($result2) < 1){
             $error = "Try another cuisine. Displaying all restaurants instead.";
         } else{
-          $sql = "SELECT restaurant_name, Restaurant.restaurant_id FROM Restaurant, Cuisine, Restaurant_Type WHERE city ='$loc'
+          $sql = "SELECT restaurant_name, Restaurant.restaurant_id, Cuisine.cuisine_id FROM Restaurant, Cuisine, Restaurant_Type WHERE city ='$loc'
                     AND Restaurant.restaurant_id = Restaurant_Type.restaurant_id
                     AND Restaurant_Type.cuisine_id = Cuisine.cuisine_id
                     AND cuisine_name = '$csn'";
@@ -39,6 +45,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
               $rest_id = $row['restaurant_id'];
               $restaurant = new Restaurant($rest_id, $conn);
               array_push($restaurants, $restaurant);
+              if($csn_marker)
+                $csn_id = $row['cuisine_id'];
+          }
+          if($csn_marker){
+            $sql3 = "INSERT INTO `Search` (`user_id`, `cuisine_id`) VALUES ('$user_id', '$csn_id')";
+            $search_result = mysqli_query($conn, $sql3);
           }
       } else{
         $error = "No results found.";
