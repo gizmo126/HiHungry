@@ -103,9 +103,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                           '<div>' . $u->user_name . '</div>' .
                           '</a>';
             ?>
-            }
-          }
-          
+          <?php   }
+          }?>
+
           </div>
       </div>
 
