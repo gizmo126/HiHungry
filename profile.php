@@ -6,6 +6,7 @@ session_start();
     include 'app/connect.php';
     include 'inc/models/ReviewObj.php';
     include 'inc/models/RestaurantObj.php';
+    include 'inc/models/UserObj.php';
     include 'inc/deleteReviews.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
@@ -18,7 +19,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $url = $row["profile_url"];
 
 
-     $friends_sql = "SELECT * FROM Friend, User WHERE Friend.user1_id='$userid' AND User.user_id=Friend.user2_id";
+     $friends_sql = "SELECT * FROM Friend, User WHERE Friend.user1_id='$user_id' AND User.user_id=Friend.user2_id";
       $friends_result = mysqli_query($conn, $friends_sql);
       $friends = [];
       if(mysqli_num_rows($friends_result) > 0){
@@ -88,7 +89,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                       <div class="col-6 col-md-4">
                         <?php
                           if(!empty($fd)){
-                          $imageData = base64_encode(file_get_contents("img/" . $fd->user_id2 . ".jpg"));
+                          $imageData = base64_encode(file_get_contents("img/" . $fd->user_id . ".jpg"));
                           echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
                           } else {
                             echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
