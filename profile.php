@@ -33,7 +33,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       }
 
 
-      $num_friends_sql = "SELECT user1_id, COUNT(*) FROM `Friend` WHERE user1_id = $userid GROUP BY `user1_id`";
+      $num_friends_sql = "SELECT user1_id, COUNT(*) FROM `Friend` WHERE `user1_id` = $user_id GROUP BY `user1_id`";
       $num_friends_result = mysqli_query($conn, $num_friends_sql);
       $num_friends = 0;
       if(mysqli_num_rows($num_friends_result) > 0){
@@ -86,7 +86,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                   <div class="row"><hr></div>
                   <div class="row">
                       <div class="col-6 col-md-4">
-                        <?php 
+                        <?php
                           if(!empty($fd)){
                           $imageData = base64_encode(file_get_contents("img/" . $fd->user_id2 . ".jpg"));
                           echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
