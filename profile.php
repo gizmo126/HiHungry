@@ -27,8 +27,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
               $username = $row['user_name'];
               $firstname = $row['Fname'];
               $lastname = $row['Lname'];
-              $user_id = $row['user_id'];
-              $friend = new User($user_id, $username, $firstname, $lastname);
+              $user_id2 = $row['user_id'];
+              $friend = new User($user_id2, $username, $firstname, $lastname);
           array_push($friends, $friend);
         }
       }
@@ -100,8 +100,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           <div class="col-6 col-md-2">
             <?php
                   echo '<h4>' . $fd->Fname.' '.$fd->Lname. '</h4>';
-                  echo '<a href="user.php?userid=' . $u->user_id . '">' .
-                          '<div>' . $u->user_name . '</div>' .
+                  echo '<a href="user.php?userid=' . $fd->user_id . '">' .
+                          '<div>' . $fd->user_name . '</div>' .
                           '</a>';
             ?>
           <?php   }
