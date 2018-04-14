@@ -10,7 +10,6 @@
       include 'inc/deleteFriends.php';
     include 'inc/addFriends.php';
 
-
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 
     $u = $_SESSION['user'];

@@ -38,7 +38,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
               $lastname = $row['Lname'];
               $user_id = $row['user_id'];
               $user = new User($user_id, $username, $firstname, $lastname);
-              array_push($users, $user); //user object prob needed
+              if($u != $username)
+                array_push($users, $user); //user object prob needed
           }
       } else{
         $error = "No Users Found.";
