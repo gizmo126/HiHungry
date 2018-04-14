@@ -17,7 +17,7 @@
       </div>
       <div class="modal-footer">
         <button name="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button id="addFriend" class="btn btn-danger" data-dismiss="modal">Add</button>
+        <button id="addFriend" class="btn btn-success" data-dismiss="modal">Add</button>
       </div>
     </div>
   </div>
