@@ -10,7 +10,15 @@
 
 
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+
+    $u = $_SESSION['user'];
+    $user_sql1 = "SELECT user_id FROM User WHERE user_name='$u'";
+    $userresult = mysqli_query($conn, $user_sql1);
+    $row = mysqli_fetch_assoc($userresult);
+    $user1id = $row["user_id"];
+
     if(isset($_GET['userid'])) {
+
 
       $userid = $_GET['userid'];
 
@@ -93,6 +101,27 @@
           echo '<img src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png" class="img-thumbnail" style="width:25%">';
         }
       ?>
+      <div class = "row">
+          <div class="col-6 col-md-12">
+              <?php
+                  $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user1id AND user2_id=$userid";
+                  $checkfriendresult = mysqli_query($conn, $checkfriendsql);
+                  if(mysqli_num_rows($checkfriendresult) == 0){ ?>
+                    <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $userid . ',' . $user1id; ?>" class="btn btn-success">Add Friend +</button>
+                 <?php
+                  }
+
+                  else{
+                    ?>
+                      <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $userid . ',' . $user1id; ?>" class="btn btn-danger">Unfriend -</button>
+                <?php
+                  }
+              ?>
+              </div>
+
+          </div>
+
+
       <div class ="row">
         <h2> Friends: <?php echo $num_friends; ?> </h2>
       </div>
