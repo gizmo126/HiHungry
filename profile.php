@@ -8,6 +8,7 @@ session_start();
     include 'inc/models/RestaurantObj.php';
     include 'inc/models/UserObj.php';
     include 'inc/deleteReviews.php';
+    include 'inc/deleteFriends.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     // get user_id
@@ -105,6 +106,19 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                           '</a>';
             ?>
             </div>
+
+            <div class="col-6 col-md-1">
+                <?php
+                    $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user_id AND user2_id=$fd->user_id";
+                    $checkfriendresult = mysqli_query($conn, $checkfriendsql);
+                    if(mysqli_num_rows($checkfriendresult) > 0){
+                      ?>
+                        <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $fd->user_id . ',' . $user_id; ?>" class="btn btn-default">x</button>
+                  <?php
+                    }
+                ?>
+            </div>
+
           </div>
         <?php   }
         }?>

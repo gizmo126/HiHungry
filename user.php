@@ -8,7 +8,6 @@
   include 'inc/models/RestaurantObj.php';
   include 'inc/models/UserObj.php';
 
-
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     if(isset($_GET['userid'])) {
 
