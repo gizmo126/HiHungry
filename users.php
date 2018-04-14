@@ -5,8 +5,16 @@ session_start();
     include 'inc/footer.php';
     include 'app/connect.php';
     include 'inc/models/UserObj.php';
+    include 'inc/deleteFriends.php';
+    include 'inc/addFriends.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    $u = $_SESSION['user'];
+    $user_sql = "SELECT user_id FROM User WHERE user_name='$u'";
+    $userresult = mysqli_query($conn, $user_sql);
+    $row = mysqli_fetch_assoc($userresult);
+    $user1id = $row["user_id"];
+
   if(isset($_POST['search'])){
     $firstname = mysqli_real_escape_string($conn, $_POST['fnm']);
     $lastname = mysqli_real_escape_string($conn, $_POST['lnm']);
@@ -79,6 +87,24 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                           '<div>' . $u->user_name . '</div>' .
                           '</a>';
             ?>
+          </div>
+          <div class="col-6 col-md-1">
+              <?php
+                  $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user1id AND user2_id=$u->user_id";
+                  $checkfriendresult = mysqli_query($conn, $checkfriendsql);
+                  if(mysqli_num_rows($checkfriendresult) == 0){ ?>
+                    <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $u->user_id; ?>" class="btn btn-default">+</button>
+                 <?php
+                  } 
+
+                  else{
+                    ?>
+                      <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $u->user_id; ?>" class="btn btn-default">x</button>
+                <?php
+                  }
+              ?>
+                          
+                            
           </div>
           <div class="col-6 col-md-2"></div>
         </div>
