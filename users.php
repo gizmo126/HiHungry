@@ -93,18 +93,18 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                   $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user1id AND user2_id=$u->user_id";
                   $checkfriendresult = mysqli_query($conn, $checkfriendsql);
                   if(mysqli_num_rows($checkfriendresult) == 0){ ?>
-                    <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $u->user_id; ?>" class="btn btn-default">+</button>
+                    <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $u->user_id . ',' . $user1id; ?>" class="btn btn-default">+</button>
                  <?php
-                  } 
+                  }
 
                   else{
                     ?>
-                      <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $u->user_id; ?>" class="btn btn-default">x</button>
+                      <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $u->user_id . ',' . $user1id; ?>" class="btn btn-default">x</button>
                 <?php
                   }
               ?>
-                          
-                            
+
+
           </div>
           <div class="col-6 col-md-2"></div>
         </div>
