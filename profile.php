@@ -86,7 +86,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 foreach($friends as &$fd){?>
                   <div class="row"><hr></div>
                   <div class="row">
-                      <div class="col-6 col-md-2">
+                      <div class="col-6 col-md-4">
                         <?php
                           if(!empty($fd)){
                           $imageData = base64_encode(file_get_contents("img/" . $fd->user_id . ".jpg"));
@@ -97,7 +97,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                         ?>
 
             </div>
-          <div class="col-6 col-md-2">
+          <div class="col-6 col-md-4">
             <?php
                   echo '<h4>' . $fd->Fname.' '.$fd->Lname. '</h4>';
                   echo '<a href="user.php?userid=' . $fd->user_id . '">' .

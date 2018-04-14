@@ -113,7 +113,7 @@
                         ?>
 
             </div>
-          <div class="col-6 col-md-2">
+          <div class="col-6 col-md-4">
             <?php
                   echo '<h4>' . $fd->Fname.' '.$fd->Lname. '</h4>';
                   echo '<a href="user.php?userid=' . $fd->user_id . '">' .
