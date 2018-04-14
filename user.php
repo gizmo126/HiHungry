@@ -7,6 +7,8 @@
   include 'inc/models/ReviewObj.php';
   include 'inc/models/RestaurantObj.php';
   include 'inc/models/UserObj.php';
+      include 'inc/deleteFriends.php';
+    include 'inc/addFriends.php';
 
 
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
