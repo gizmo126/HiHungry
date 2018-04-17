@@ -7,9 +7,17 @@
   include 'inc/models/RestaurantObj.php';
   include 'inc/models/ReviewObj.php';
   include 'inc/deleteReviews.php';
+  include 'inc/addFav.php';
+  include 'inc/deleteFav.php';
 
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     if(isset($_GET['restid'])) {
+
+      // get user_id
+      $user = $_SESSION['user'];
+      $user_sql = "SELECT user_id FROM User WHERE user_name='$user'";
+      $user_result = mysqli_query($conn, $user_sql);
+      $user_id = mysqli_fetch_assoc($user_result)["user_id"];
 
       // Populate RestaurantObj
       $restid = $_GET['restid'];
@@ -36,12 +44,6 @@
 
       // Add New Review
       if(isset($_POST['review'])){
-          // get user_id
-          $user = $_SESSION['user'];
-          $user_sql = "SELECT user_id FROM User WHERE user_name='$user'";
-          $user_result = mysqli_query($conn, $user_sql);
-          $user_id = mysqli_fetch_assoc($user_result)["user_id"];
-
           // set all the values to insert new review into Reviews
           $restaurant_id = $_GET['restid'];
           $review_rating = mysqli_real_escape_string($conn, $_POST['selected']);
@@ -91,6 +93,25 @@
               }
             ?>
           </div>
+
+          <div class = "row">
+              <div class="col-6 col-md-12">
+                  <?php
+                      $checkfavsql = "SELECT * FROM Favorite WHERE user_id=$user_id AND restaurant_id=$restid";
+                      $checkfavresult = mysqli_query($conn, $checkfavsql);
+                      if(mysqli_num_rows($checkfavresult) == 0){ ?>
+                        <button data-toggle="modal" data-target="#addFavModal" data-id="<?php echo $user_id . ',' . $restid; ?>" class="btn btn-success">Favorite +</button>
+                     <?php
+                      }
+                      else{
+                        ?>
+                          <button data-toggle="modal" data-target="#deleteFavModal" data-id="<?php echo $user_id . ',' . $restid; ?>" class="btn btn-danger">Unfavorite -</button>
+                    <?php
+                      }
+                  ?>
+              </div>
+          </div>
+
           <div class="top-buffer"></div>
           <div class="row" id="stars">
             <?php $counter = 0;

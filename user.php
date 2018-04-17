@@ -7,8 +7,8 @@
   include 'inc/models/ReviewObj.php';
   include 'inc/models/RestaurantObj.php';
   include 'inc/models/UserObj.php';
-      include 'inc/deleteFriends.php';
-    include 'inc/addFriends.php';
+  include 'inc/deleteFriends.php';
+  include 'inc/addFriends.php';
 
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 
@@ -111,17 +111,14 @@
                     <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $userid . ',' . $user1id; ?>" class="btn btn-success">Add Friend +</button>
                  <?php
                   }
-
                   else{
                     ?>
                       <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $userid . ',' . $user1id; ?>" class="btn btn-danger">Unfriend -</button>
                 <?php
                   }
               ?>
-              </div>
-
           </div>
-
+      </div>
 
       <div class ="row">
         <h2> Friends: <?php echo $num_friends; ?> </h2>
