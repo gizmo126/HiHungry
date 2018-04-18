@@ -50,7 +50,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     header('Location: login.php');
 }
 ?>
-      <div class="container">
+  <div class="container">
     <div class="starter-template">
       <h1>Users</h1>
       <div class="text-center">
@@ -64,52 +64,46 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             </div>
         </form>
       </div>
-      <div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
+      <div style="font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
       <div class="row"><hr></div>
       <?php
           if(count($users)>0){
             foreach($users as & $u){?>
-        <div class="row">
-          <div class="col-6 col-md-2"></div>
-          <div class="col-6 col-md-4">
-            <?php
-              if(!empty($u)){
-                $imageData = base64_encode(file_get_contents("img/" . $u->user_id . ".jpg"));
-                echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
-              } else {
-                echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
-              }
-            ?>
-          </div>
-          <div class="col-6 col-md-2">
-            <?php
-                  echo '<h4>' . $u->Fname.' '.$u->Lname. '</h4>';
-                  echo '<a href="user.php?userid=' . $u->user_id . '">' .
-                          '<div>' . $u->user_name . '</div>' .
-                          '</a>';
-            ?>
-          </div>
-          <div class="col-6 col-md-1">
-              <?php
-                  $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user1id AND user2_id=$u->user_id";
-                  $checkfriendresult = mysqli_query($conn, $checkfriendsql);
-                  if(mysqli_num_rows($checkfriendresult) == 0){ ?>
-                    <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $u->user_id . ',' . $user1id; ?>" class="btn btn-default">+</button>
-                 <?php
-                  }
-
-                  else{
+              <div class="row">
+                <div class="col-6 col-md-4">
+                  <?php
+                    if(!empty($u)){
+                      $imageData = base64_encode(file_get_contents("img/" . $u->user_id . ".jpg"));
+                      echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                    } else {
+                      echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
+                    }
+                  ?>
+                </div>
+                <div class="col-6 col-md-4">
+                  <?php
+                        echo '<h4>' . $u->Fname.' '.$u->Lname. '</h4>';
+                        echo '<a href="user.php?userid=' . $u->user_id . '">' .
+                                '<div>' . $u->user_name . '</div>' .
+                                '</a>';
+                  ?>
+                </div>
+                <div class="col-6 col-md-4">
+                    <?php
+                        $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user1id AND user2_id=$u->user_id";
+                        $checkfriendresult = mysqli_query($conn, $checkfriendsql);
+                        if(mysqli_num_rows($checkfriendresult) == 0){ ?>
+                          <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $u->user_id . ',' . $user1id; ?>" class="btn btn-success">+</button>
+                        <?php
+                        } else { ?>
+                          <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $u->user_id . ',' . $user1id; ?>" class="btn btn-danger">x</button>
+                        <?php
+                        }
                     ?>
-                      <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $u->user_id . ',' . $user1id; ?>" class="btn btn-default">x</button>
-                <?php
-                  }
-              ?>
-
-
-          </div>
-          <div class="col-6 col-md-2"></div>
-        </div>
-        <div class="row"><hr></div>
-      <?php }} ?>
+                </div>
+              </div>
+              <div class="row"><hr></div>
+          <?php }
+          } ?>
     </div>
   </div>

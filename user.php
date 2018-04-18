@@ -9,9 +9,10 @@
   include 'inc/models/UserObj.php';
   include 'inc/deleteFriends.php';
   include 'inc/addFriends.php';
+  include 'inc/addFav.php';
+  include 'inc/deleteFav.php';
 
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-
     $u = $_SESSION['user'];
     $user_sql1 = "SELECT user_id FROM User WHERE user_name='$u'";
     $userresult = mysqli_query($conn, $user_sql1);
@@ -19,8 +20,6 @@
     $user1id = $row["user_id"];
 
     if(isset($_GET['userid'])) {
-
-
       $userid = $_GET['userid'];
 
       // Get Review
@@ -50,7 +49,6 @@
         }
       }
 
-
       $num_friends_sql = "SELECT user1_id, COUNT(*) FROM `Friend` WHERE user1_id = $userid GROUP BY `user1_id`";
       $num_friends_result = mysqli_query($conn, $num_friends_sql);
       $num_friends = 0;
@@ -59,7 +57,24 @@
         $num_friends = $row2['COUNT(*)'];
       }
 
+      // get favorites for that user
+      $favs = [];
+      $fav_sql = "SELECT * FROM Favorite WHERE user_id=$user_id";
+      $fav_result = mysqli_query($conn, $fav_sql);
+      if(mysqli_num_rows($fav_result) > 0){
+        while($row = mysqli_fetch_assoc($fav_result)){
+          $fav = new Restaurant($row['restaurant_id'], $conn);
+          array_push($favs, $fav);
+        }
+      }
 
+      $num_fav_sql = "SELECT user_id, COUNT(*) FROM `Favorite` WHERE `user_id` = $user_id GROUP BY `user_id`";
+      $num_fav_result = mysqli_query($conn, $num_fav_sql);
+      $num_fav = 0;
+      if(mysqli_num_rows($num_fav_result) > 0){
+          $row2 = mysqli_fetch_assoc($num_fav_result);
+          $num_fav = $row2['COUNT(*)'];
+      }
 
       // get reviews for that user
       $reviews_sql = "SELECT * FROM Reviews WHERE user_id='$userid'";
@@ -72,14 +87,13 @@
         }
       }
 
-      $num_reviews_sql = "SELECT user_id, COUNT(*) FROM `Reviews` WHERE user_id = $userid GROUP BY `user_id`";
+      $num_reviews_sql = "SELECT user_id, COUNT(*) FROM `Reviews` WHERE user_id=$userid GROUP BY `user_id`";
       $num_result = mysqli_query($conn, $num_reviews_sql);
       $num = 0;
       if(mysqli_num_rows($num_result) > 0){
         $row1 = mysqli_fetch_assoc($num_result);
         $num = $row1['COUNT(*)'];
       }
-
     } else {
       header("location:javascript://history.go(-1)");
     }
@@ -102,7 +116,8 @@
           echo '<img src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png" class="img-thumbnail" style="width:25%">';
         }
       ?>
-      <div class = "row">
+      <div class="top-buffer">
+      <div class="row">
           <div class="col-6 col-md-12">
               <?php
                   $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user1id AND user2_id=$userid";
@@ -119,12 +134,12 @@
               ?>
           </div>
       </div>
-
+      <div class="top-buffer"></div>
       <div class ="row">
         <h2> Friends: <?php echo $num_friends; ?> </h2>
       </div>
       <?php if($num_friends ==0) { ?>
-                <h4> No Friends Added! <h4>
+                <h4> No Friends Added! </h4>
       <?php } else {
                 foreach($friends as &$fd){ ?>
                   <div class="row"><hr></div>
@@ -138,40 +153,102 @@
                             echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
                           }
                         ?>
-
+                      </div>
+                      <div class="col-6 col-md-8">
+                          <div class="col-6 col-md-6">
+                            <?php
+                                  echo '<h4>' . $fd->Fname.' '.$fd->Lname. '</h4>';
+                                  echo '<a href="user.php?userid=' . $fd->user_id . '">' .
+                                          '<div>' . $fd->user_name . '</div>' .
+                                          '</a>';
+                            ?>
+                          </div>
+                          <div class="col-6 col-md-2"></div>
+                          <div class="col-6 col-md-1">
+                            <?php
+                                $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user1id AND user2_id=$fd->user_id";
+                                $checkfriendresult = mysqli_query($conn, $checkfriendsql);
+                                if(mysqli_num_rows($checkfriendresult) == 0){ ?>
+                                  <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $fd->user_id . ',' . $user1id; ?>" class="btn btn-default">Add Friend</button>
+                                <?php
+                                } else { ?>
+                                  <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $u->user_id . ',' . $user1id; ?>" class="btn btn-default">Unfriend</button>
+                                <?php
+                                }
+                            ?>
+                          </div>
+                      </div>
+                  </div>
+              <?php }
+            } ?>
+            <div class="top-buffer"></div>
+            <div class ="row">
+              <h2> Favorites: <?php echo $num_fav; ?> </h2>
             </div>
-          <div class="col-6 col-md-4">
-            <?php
-                  echo '<h4>' . $fd->Fname.' '.$fd->Lname. '</h4>';
-                  echo '<a href="user.php?userid=' . $fd->user_id . '">' .
-                          '<div>' . $fd->user_name . '</div>' .
-                          '</a>';
-            ?>
-            </div>
-        </div>
-          <?php }
-        } ?>
-
-
+            <?php if($num_fav == 0) {?>
+                      <h4> No Favorites Added! </h4>
+            <?php } else {
+                      foreach($favs as &$fav){?>
+                        <div class="row"><hr></div>
+                        <div class="row">
+                            <div class="col-6 col-md-4">
+                              <?php
+                                if(!empty($fav)){
+                                $imageData = base64_encode(file_get_contents("img/" . $fav->restaurant_id . ".jpg"));
+                                echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                                } else {
+                                  echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
+                                }
+                              ?>
+                            </div>
+                            <div class="col-6 col-md-8">
+                                <div class="col-6 col-md-6">
+                                  <?php
+                                      echo '<a href="restaurant.php?restid=' . $fav->restaurant_id . '">' .
+                                              '<h5>' . $fav->restaurant_name . '</h5>' .
+                                            '</a>';
+                                  ?>
+                                  </div>
+                                  <div class="col-6 col-md-2"></div>
+                                  <div class="col-6 col-md-1">
+                                    <?php
+                                        $checkfavsql = "SELECT * FROM Favorite WHERE user_id=$user1id AND restaurant_id=$fav->restaurant_id";
+                                        $checkfavresult = mysqli_query($conn, $checkfavsql);
+                                        if(mysqli_num_rows($checkfavresult) == 0){ ?>
+                                          <button data-toggle="modal" data-target="#addFavModal" data-id="<?php echo $user1id . ',' . $fav->restaurant_id; ?>" class="btn btn-default">Favorite</button>
+                                       <?php
+                                        }
+                                        else{
+                                          ?>
+                                            <button data-toggle="modal" data-target="#deleteFavModal" data-id="<?php echo $user1id . ',' . $fav->restaurant_id; ?>" class="btn btn-default">Unfavorite</button>
+                                      <?php
+                                        }
+                                    ?>
+                                  </div>
+                            </div>
+                        </div>
+            <?php   }
+                }?>
+      <div class="top-buffer"></div>
       <div class="row">
         <h2> Reviews: <?php echo $num; ?> </h2>
       </div>
       <?php if($num == 0){ ?>
-                <h4> No Reviews Yet!<h4>
+                <h4> No Reviews Yet!</h4>
       <?php } else {
                 foreach($reviews as &$rev){?>
                   <div class="row"><hr></div>
                   <div class="row">
-                    <div class="col-6 col-md-4">
-                      <?php
-                        if(!empty($rev)){
-                          $imageData = base64_encode(file_get_contents("img/" . $rev->restaurant_id . ".jpg"));
-                          echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
-                        } else {
-                          echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
-                        }
-                      ?>
-                    </div>
+                      <div class="col-6 col-md-4">
+                        <?php
+                          if(!empty($rev)){
+                            $imageData = base64_encode(file_get_contents("img/" . $rev->restaurant_id . ".jpg"));
+                            echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                          } else {
+                            echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
+                          }
+                        ?>
+                      </div>
                       <div class="col-6 col-md-8">
                         <div class="row">
                           <?php echo
@@ -179,7 +256,7 @@
                               '<div class="col-6 col-md-6">' . $rev->restaurant_name . '</div>' .
                             '</a>';
                           ?>
-                          <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo "Rating: " . $rev->rating; }?></div>
+                          <div class="col-6 col-md-6"><?php if(isset($rev->rating)){ echo "Rating: " . $rev->rating; }?></div>
                         </div>
                         <div class="row">
                           <div class="col-6 col-md-6">

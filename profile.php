@@ -9,6 +9,8 @@ session_start();
     include 'inc/models/UserObj.php';
     include 'inc/deleteReviews.php';
     include 'inc/deleteFriends.php';
+    include 'inc/addFav.php';
+    include 'inc/deleteFav.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     // get user_id
@@ -19,29 +21,47 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $user_id = $row["user_id"];
     $url = $row["profile_url"];
 
-
-     $friends_sql = "SELECT * FROM Friend, User WHERE Friend.user1_id='$user_id' AND User.user_id=Friend.user2_id";
-      $friends_result = mysqli_query($conn, $friends_sql);
-      $friends = [];
-      if(mysqli_num_rows($friends_result) > 0){
-        while($row = mysqli_fetch_assoc($friends_result)){
-              $username = $row['user_name'];
-              $firstname = $row['Fname'];
-              $lastname = $row['Lname'];
-              $user_id2 = $row['user_id'];
-              $friend = new User($user_id2, $username, $firstname, $lastname);
+    // get users's friends
+    $friends_sql = "SELECT * FROM Friend, User WHERE Friend.user1_id='$user_id' AND User.user_id=Friend.user2_id";
+    $friends_result = mysqli_query($conn, $friends_sql);
+    $friends = [];
+    if(mysqli_num_rows($friends_result) > 0){
+      while($row = mysqli_fetch_assoc($friends_result)){
+          $username = $row['user_name'];
+          $firstname = $row['Fname'];
+          $lastname = $row['Lname'];
+          $user_id2 = $row['user_id'];
+          $friend = new User($user_id2, $username, $firstname, $lastname);
           array_push($friends, $friend);
-        }
       }
+    }
 
-
-      $num_friends_sql = "SELECT user1_id, COUNT(*) FROM `Friend` WHERE `user1_id` = $user_id GROUP BY `user1_id`";
-      $num_friends_result = mysqli_query($conn, $num_friends_sql);
-      $num_friends = 0;
-      if(mysqli_num_rows($num_friends_result) > 0){
+    $num_friends_sql = "SELECT user1_id, COUNT(*) FROM `Friend` WHERE `user1_id` = $user_id GROUP BY `user1_id`";
+    $num_friends_result = mysqli_query($conn, $num_friends_sql);
+    $num_friends = 0;
+    if(mysqli_num_rows($num_friends_result) > 0){
         $row2 = mysqli_fetch_assoc($num_friends_result);
         $num_friends = $row2['COUNT(*)'];
+    }
+
+    // get user's favorites
+    $favs = [];
+    $fav_sql = "SELECT * FROM Favorite WHERE user_id=$user_id";
+    $fav_result = mysqli_query($conn, $fav_sql);
+    if(mysqli_num_rows($fav_result) > 0){
+      while($row = mysqli_fetch_assoc($fav_result)){
+        $fav = new Restaurant($row['restaurant_id'], $conn);
+        array_push($favs, $fav);
       }
+    }
+
+    $num_fav_sql = "SELECT user_id, COUNT(*) FROM `Favorite` WHERE `user_id` = $user_id GROUP BY `user_id`";
+    $num_fav_result = mysqli_query($conn, $num_fav_sql);
+    $num_fav = 0;
+    if(mysqli_num_rows($num_fav_result) > 0){
+        $row2 = mysqli_fetch_assoc($num_fav_result);
+        $num_fav = $row2['COUNT(*)'];
+    }
 
     // get reviews for that user
     $reviews_sql = "SELECT * FROM Reviews WHERE user_id='$user_id'";
@@ -78,11 +98,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           echo '<img src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png" class="img-thumbnail" style="width:25%">';
         }
       ?>
-           <div class ="row">
+      <div class="top-buffer"></div>
+      <div class ="row">
         <h2> Friends: <?php echo $num_friends; ?> </h2>
       </div>
       <?php if($num_friends ==0) {?>
-                <h4> No Friends Added! <h4>
+                <h4> No Friends Added! </h4>
       <?php } else {
                 foreach($friends as &$fd){?>
                   <div class="row"><hr></div>
@@ -98,36 +119,74 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                         ?>
 
             </div>
-          <div class="col-6 col-md-4">
-            <?php
-                  echo '<h4>' . $fd->Fname.' '.$fd->Lname. '</h4>';
-                  echo '<a href="user.php?userid=' . $fd->user_id . '">' .
-                          '<div>' . $fd->user_name . '</div>' .
-                          '</a>';
-            ?>
-            </div>
-
-            <div class="col-6 col-md-1">
-                <?php
-                    $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user_id AND user2_id=$fd->user_id";
-                    $checkfriendresult = mysqli_query($conn, $checkfriendsql);
-                    if(mysqli_num_rows($checkfriendresult) > 0){
-                      ?>
-                        <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $fd->user_id . ',' . $user_id; ?>" class="btn btn-default">x</button>
+            <div class="col-6 col-md-8">
+                <div class="col-6 col-md-6">
                   <?php
-                    }
-                ?>
-            </div>
+                        echo '<h4>' . $fd->Fname.' '.$fd->Lname. '</h4>';
+                        echo '<a href="user.php?userid=' . $fd->user_id . '">' .
+                                '<h5>' . $fd->user_name . '</h5>' .
+                              '</a>';
+                  ?>
+                  </div>
+                  <div class="col-6 col-md-3"></div>
+                  <div class="col-6 col-md-1">
+                      <?php
+                          $checkfriendsql = "SELECT * FROM Friend WHERE user1_id=$user_id AND user2_id=$fd->user_id";
+                          $checkfriendresult = mysqli_query($conn, $checkfriendsql);
+                          if(mysqli_num_rows($checkfriendresult) > 0){ ?>
+                              <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $fd->user_id . ',' . $user_id; ?>" class="btn btn-default">x</button>
+                        <?php
+                          }
+                        ?>
+                  </div>
 
-          </div>
+                </div>
+            </div>
         <?php   }
         }?>
+      <div class="top-buffer"></div>
+      <div class ="row">
+        <h2> Favorites: <?php echo $num_fav; ?> </h2>
+      </div>
+      <?php if($num_fav ==0) {?>
+                <h4> No Favorites Added! </h4>
+      <?php } else {
+                foreach($favs as &$fav){?>
+                  <div class="row"><hr></div>
+                  <div class="row">
+                      <div class="col-6 col-md-4">
+                        <?php
+                          if(!empty($fav)){
+                          $imageData = base64_encode(file_get_contents("img/" . $fav->restaurant_id . ".jpg"));
+                          echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                          } else {
+                            echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
+                          }
+                        ?>
 
+            </div>
+            <div class="col-6 col-md-8">
+                <div class="col-6 col-md-6">
+                  <?php
+                      echo '<a href="restaurant.php?restid=' . $fav->restaurant_id . '">' .
+                              '<h5>' . $fav->restaurant_name . '</h5>' .
+                            '</a>';
+                  ?>
+                  </div>
+                  <div class="col-6 col-md-3"></div>
+                  <div class="col-6 col-md-1">
+                    <button data-toggle="modal" data-target="#deleteFavModal" data-id="<?php echo $user_id . ',' . $fav->restaurant_id; ?>" class="btn btn-default">x</button>
+                  </div>
+                </div>
+            </div>
+        <?php   }
+        }?>
+      <div class="top-buffer"></div>
       <div class="row">
         <h2> Reviews: <?php echo $num; ?> </h2>
       </div>
       <?php if(count($reviews) == 0){ ?>
-                <h4> No Reviews Yet!<h4>
+                <h4> No Reviews Yet!</h4>
       <?php } else {
                 foreach($reviews as &$rev){?>
                   <div class="row"><hr></div>
@@ -147,7 +206,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                         <div class="row">
                           <?php echo
                             '<a href="restaurant.php?restid=' . $rev->restaurant_id . '">' .
-                              '<div class="col-6 col-md-6">' . $rev->restaurant_name . '</div>' .
+                              '<div class="col-6 col-md-6"><h5>' . $rev->restaurant_name . '</h5></div>' .
                             '</a>';
                           ?>
                           <div class="col-6 col-md-3"><?php if(isset($rev->rating)){ echo "Rating: " . $rev->rating; }?></div>

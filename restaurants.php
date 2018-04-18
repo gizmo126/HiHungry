@@ -5,6 +5,8 @@ session_start();
     include 'inc/footer.php';
     include 'app/connect.php';
     include 'inc/models/RestaurantObj.php';
+    include 'inc/addFav.php';
+    include 'inc/deleteFav.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
   $user = $_SESSION['user'];
@@ -62,9 +64,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     header('Location: login.php');
 }
 ?>
-<style>
-  <?php include 'css/restaurant.css'; ?>
-</style>
+  <style>
+    <?php include 'css/restaurant.css'; ?>
+  </style>
   <div class="container">
     <div class="starter-template">
       <h1>Restaurants</h1>
@@ -91,11 +93,11 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           if(count($restaurants)>0){
             foreach($restaurants as &$r){?>
             <div class="row">
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <?php
                   if(!empty($r)){
                     $imageData = base64_encode(file_get_contents("img/" . $r->restaurant_id . ".jpg"));
-                    echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                    echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:30%">';
                   } else {
                     echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
                   }
@@ -104,11 +106,11 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
               <div class="col-6 col-md-4">
                 <?php echo
                       '<a href="restaurant.php?restid=' . $r->restaurant_id . '">' .
-                          '<div>' . $r->restaurant_name . '</div>' .
+                          '<h4>' . $r->restaurant_name . '</h4>' .
                       '</a>';
                 ?>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                   <div class="row" id="stars">
                     <?php $counter = 0;
                           while($counter < $r->rating){
@@ -121,6 +123,21 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                           }
                     ?>
                   </div>
+              </div>
+              <div class="col-6 col-md-1">
+                <?php
+                    $checkfavsql = "SELECT * FROM Favorite WHERE user_id=$user_id AND restaurant_id=$r->restaurant_id";
+                    $checkfavresult = mysqli_query($conn, $checkfavsql);
+                    if(mysqli_num_rows($checkfavresult) == 0){ ?>
+                      <button data-toggle="modal" data-target="#addFavModal" data-id="<?php echo $user1id . ',' . $r->restaurant_id; ?>" class="btn btn-success">+</button>
+                   <?php
+                    }
+                    else{
+                      ?>
+                        <button data-toggle="modal" data-target="#deleteFavModal" data-id="<?php echo $user1id . ',' . $r->restaurant_id; ?>" class="btn btn-danger">x</button>
+                  <?php
+                    }
+                ?>
               </div>
             </div>
         <div class="row"><hr></div>

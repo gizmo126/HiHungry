@@ -80,6 +80,7 @@
           echo '<img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-thumbnail" style="width:25%">';
         }
       ?>
+      <div class="top-buffer"></div>
       <div class="text-center">
           <div class="row"><?php if(isset($rest->address)){ echo $rest->address; }?></div>
           <div class="row"><?php if(isset($rest->pricerange)){ for($x = 0; $x < $rest->pricerange; $x++){ echo "$"; } } ?></div>
@@ -93,8 +94,8 @@
               }
             ?>
           </div>
-
-          <div class = "row">
+          <div class="top-buffer"></div>
+          <div class="row">
               <div class="col-6 col-md-12">
                   <?php
                       $checkfavsql = "SELECT * FROM Favorite WHERE user_id=$user_id AND restaurant_id=$restid";
@@ -111,7 +112,6 @@
                   ?>
               </div>
           </div>
-
           <div class="top-buffer"></div>
           <div class="row" id="stars">
             <?php $counter = 0;
@@ -134,7 +134,7 @@
           <button type="button" data-toggle="modal" data-target="#addReviewModal" class="btn btn-primary">Add Review +</button>
         </div>
         <?php if(count($reviews) == 0){ ?>
-                  <div class="row"><h4> No Reviews Yet!<h4></div>
+                  <div class="row"><h4> No Reviews Yet!</h4></div>
         <?php } else {
                   foreach($reviews as &$rev){?>
                     <div class="row"><hr></div>

@@ -13,7 +13,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <h5>Are You Sure You Want to Remove This Restaurant From Favorites?</h5>
+        <h5>Are You Sure You Want to Remove This Restaurant From Your Favorites?</h5>
       </div>
       <div class="modal-footer">
         <button name="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
