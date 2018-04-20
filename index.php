@@ -86,7 +86,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         <a href="restaurants.php" class="btn btn-link btn-lg" aria-pressed="true">Browse</a>
       </p>
     </div>
-  <?php echo $marker; ?>
   <?php
     foreach($recs as &$r){?>
   <div class="row">
