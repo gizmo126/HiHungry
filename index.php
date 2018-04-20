@@ -6,7 +6,8 @@ session_start();
     include 'app/connect.php';
     include 'inc/models/UserObj.php';
     include 'inc/models/RestaurantObj.php';
-
+    include 'inc/addFav.php';
+    include 'inc/deleteFav.php';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
   // get user_id
@@ -16,7 +17,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
   $row = mysqli_fetch_assoc($user_result);
   $user_id = $row["user_id"];
 
-  $search_sql = "SELECT cuisine_id, COUNT(cuisine_id) FROM Search WHERE user_id = $user_id GROUP BY cuisine_id ORDER BY COUNT(cuisine_id) DESC LIMIT 3";
+  $view_sql = "CREATE VIEW UserSearches AS SELECT * FROM Search WHERE user_id = $user_id";
+  $view_result = mysqli_query($conn, $view_sql);
+  $search_sql = "SELECT cuisine_id, COUNT(cuisine_id) FROM UserSearches GROUP BY cuisine_id ORDER BY COUNT(cuisine_id) DESC LIMIT 3";
   $search_result = mysqli_query($conn, $search_sql);
   $cuisines = [];
   if(mysqli_num_rows($search_result) > 0){
@@ -30,9 +33,11 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
   $count = 0;
   $recs = [];
   foreach ($cuisines as &$c){
-      $recommendation_sql = "SELECT * FROM Restaurant, Restaurant_Type, Favorite
-            WHERE user_id = $user_id AND cuisine_id = $c->cuisine_id AND Restaurant.restaurant_id = Restaurant_Type.restaurant_id
-            AND Restaurant.restaurant_id = Favorite.restaurant_id AND Restaurant.rating >= 4 LIMIT 5";
+      $recs_view_sql = "CREATE VIEW RestRecs AS SELECT Restaurant.restaurant_id, cuisine_id, rating FROM Restaurant, Restaurant_Type, Favorite
+            WHERE user_id = $user_id AND Restaurant.restaurant_id = Restaurant_Type.restaurant_id AND Restaurant.restaurant_id = Favorite.restaurant_id";
+      $recs_view_result = mysqli_query($conn, $recs_view_sql);
+      $recommendation_sql = "SELECT * FROM RestRecs
+            WHERE cuisine_id = $c->cuisine_id AND rating >= 4 LIMIT 5";
       $recommendation_result = mysqli_query($conn, $recommendation_sql);
       if(mysqli_num_rows($recommendation_result) > 0){
           while($row1 = mysqli_fetch_assoc($recommendation_result)){
@@ -77,6 +82,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     header('Location: login.php');
 }
 ?>
+<style>
+  <?php include 'css/restaurant.css'; ?>
+</style>
   <div class="container">
     <div class="starter-template">
       <h1>HiHungry</h1>
@@ -106,12 +114,38 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                     '<h4>' . $r->restaurant_name . '</h4>' .
                   '</a>';
         ?>
-        </div>
-        <div class="col-6 col-md-3"></div>
-        <div class="col-6 col-md-2">
-          <button data-toggle="modal" data-target="#deleteFavModal" data-id="<?php echo $user_id . ',' . $fav->restaurant_id; ?>" class="btn btn-default">x</button>
-        </div>
       </div>
+      <div class="col-6 col-md-3"></div>
+  </div>
+  <div class="col-6 col-md-3">
+      <div class="row" id="stars">
+        <?php $counter = 0;
+              while($counter < $r->rating){
+                  echo '<span class="fa fa-star checked"></span>';
+                  $counter++;
+              }
+              while($counter < 5){
+                  echo '<span class="fa fa-star"></span>';
+                  $counter++;
+              }
+        ?>
+      </div>
+  </div>
+  <div class="col-6 col-md-1">
+    <?php
+        $checkfavsql = "SELECT * FROM Favorite WHERE user_id=$user_id AND restaurant_id=$r->restaurant_id";
+        $checkfavresult = mysqli_query($conn, $checkfavsql);
+        if(mysqli_num_rows($checkfavresult) == 0){ ?>
+          <button data-toggle="modal" data-target="#addFavModal" data-id="<?php echo $user_id . ',' . $r->restaurant_id; ?>" class="btn btn-success">+</button>
+       <?php
+        }
+        else{
+          ?>
+            <button data-toggle="modal" data-target="#deleteFavModal" data-id="<?php echo $user_id . ',' . $r->restaurant_id; ?>" class="btn btn-danger">x</button>
+      <?php
+        }
+    ?>
+  </div>
   </div>
   <div class="row"><hr></div>
   <?php   } ?>
