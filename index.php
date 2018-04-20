@@ -97,7 +97,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
   <?php
     foreach($recs as &$r){?>
   <div class="row">
-  <div class="col-8 col-md-4">
+  <div class="col-6 col-md-3">
         <?php
           if(!empty($r)){
           $imageData = base64_encode(file_get_contents("img/" . $r->restaurant_id . ".jpg"));
@@ -107,15 +107,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
           }
         ?>
   </div>
-  <div class="col-8 col-md-8">
-      <div class="col-8 col-md-6">
+  <div class="col-6 col-md-4">
         <?php
             echo '<a href="restaurant.php?restid=' . $r->restaurant_id . '">' .
                     '<h4>' . $r->restaurant_name . '</h4>' .
                   '</a>';
         ?>
-      </div>
-      <div class="col-6 col-md-3"></div>
   </div>
   <div class="col-6 col-md-3">
       <div class="row" id="stars">
