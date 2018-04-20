@@ -15,4 +15,14 @@ Class User {
     }
 }
 
+Class Cuisine {
+    public $cuisine_id;
+    public $cuisine_count;
+
+    public function __construct($id, $count) {
+      $this->cuisine_id = $id;
+      $this->cuisine_count = $count;
+    }
+}
+
 ?>

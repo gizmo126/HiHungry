@@ -152,18 +152,17 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 <h4> No Favorites Added! </h4>
       <?php } else {
                 foreach($favs as &$fav){?>
-                  <div class="row"><hr></div>
-                  <div class="row">
-                      <div class="col-6 col-md-4">
-                        <?php
-                          if(!empty($fav)){
-                          $imageData = base64_encode(file_get_contents("img/" . $fav->restaurant_id . ".jpg"));
-                          echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
-                          } else {
-                            echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
-                          }
-                        ?>
-
+            <div class="row"><hr></div>
+            <div class="row">
+            <div class="col-6 col-md-4">
+                  <?php
+                    if(!empty($fav)){
+                    $imageData = base64_encode(file_get_contents("img/" . $fav->restaurant_id . ".jpg"));
+                    echo '<img src="data:image/jpeg;base64,'. $imageData .'" class="img-thumbnail" style="width:25%">';
+                    } else {
+                      echo '<img src="http://s3.amazonaws.com/cdn.roosterteeth.com/default/tb/user_profile_female.jpg" class="img-thumbnail" style="width:25%">';
+                    }
+                  ?>
             </div>
             <div class="col-6 col-md-8">
                 <div class="col-6 col-md-6">
