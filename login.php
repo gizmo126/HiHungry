@@ -45,8 +45,17 @@ elseif(isset($_POST['signup'])){
 	      	$error2 = "Username has been taken.";
 	      } else {
 					$sql2 = "INSERT INTO User (user_name, password, Lname, Fname, profile_url) VALUES ('$unme', '$upwd', '$last_name', '$first_name', '$profile_photo')";
-					$result = mysqli_query($conn, $sql2);
+					$result2 = mysqli_query($conn, $sql2);
           $success = "Account created, please sign in.";
+          $sql3 = "SELECT * FROM User WHERE user_name='$unme'"; //create query
+          $result3 = mysqli_query($conn, $sql3);
+          if(mysqli_num_rows($result3) > 0){
+            while($row = mysqli_fetch_assoc($result3)){
+              $user_id = $row['user_id'];
+              $profile_url = $row['profile_url'];
+              copy($profile_url, 'img/' . $user_id . '.jpg');
+            }
+          }
 				}
 		}
 }
