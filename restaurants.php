@@ -129,12 +129,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                     $checkfavsql = "SELECT * FROM Favorite WHERE user_id=$user_id AND restaurant_id=$r->restaurant_id";
                     $checkfavresult = mysqli_query($conn, $checkfavsql);
                     if(mysqli_num_rows($checkfavresult) == 0){ ?>
-                      <button data-toggle="modal" data-target="#addFavModal" data-id="<?php echo $user1id . ',' . $r->restaurant_id; ?>" class="btn btn-success">+</button>
+                      <button data-toggle="modal" data-target="#addFavModal" data-id="<?php echo $user_id . ',' . $r->restaurant_id; ?>" class="btn btn-success">+</button>
                    <?php
                     }
                     else{
                       ?>
-                        <button data-toggle="modal" data-target="#deleteFavModal" data-id="<?php echo $user1id . ',' . $r->restaurant_id; ?>" class="btn btn-danger">x</button>
+                        <button data-toggle="modal" data-target="#deleteFavModal" data-id="<?php echo $user_id . ',' . $r->restaurant_id; ?>" class="btn btn-danger">x</button>
                   <?php
                     }
                 ?>
