@@ -4,7 +4,6 @@ from nltk.corpus import stopwords
 from nltk import WordPunctTokenizer, RegexpTokenizer, pos_tag
 import numpy as np
 import string
-import json
 import pandas as pd
 import sklearn
 import re

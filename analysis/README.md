@@ -35,7 +35,6 @@ Currently, this does not work on cPanel, only localhost. If you SSH in, and run 
 - `from nltk import WordPunctTokenizer, RegexpTokenizer, pos_tag`
 - `import numpy as np`
 - `import string`
-- `import json`
 - `import pandas as pd`
 - `import sklearn`
 - `import re`

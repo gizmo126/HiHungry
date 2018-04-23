@@ -4,7 +4,6 @@ from nltk.corpus import stopwords
 from nltk import WordPunctTokenizer, RegexpTokenizer, pos_tag
 import numpy as np
 import string
-import json
 import pandas as pd
 import sklearn
 import re
@@ -80,7 +79,7 @@ def show_wordcloud(data, title='What Others Diners Say:'):
         stopwords=stopwords.words('english'),
         max_font_size=40,
         scale=3,
-        random_state=1 
+        random_state=1
     ).generate(str(" ".join(data)))
     fig = plt.figure(1, figsize=(15, 10))
     plt.axis('off')
