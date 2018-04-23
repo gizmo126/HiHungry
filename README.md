@@ -1,7 +1,7 @@
 # HiHungry
 Spring 18 CS411 - Database Systems
 
-Live Site: http://gizmohihungry.web.engr.illinois.edu/
+Live Site: http://gizmohihungry.web.engr.illinois.edu/ (test user: *samhuang*, password: *password*)
 
 Video Demo: https://www.youtube.com/watch?v=BPI_TsDOnHs&feature=youtu.be
 
