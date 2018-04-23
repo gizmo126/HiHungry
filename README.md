@@ -5,8 +5,8 @@ Live Site: http://gizmohihungry.web.engr.illinois.edu/ (test user: *samhuang*, p
 
 Video Demo: https://www.youtube.com/watch?v=BPI_TsDOnHs&feature=youtu.be
 
-- **Advanced Function 1** - Personalized Restaurant Recommendations (index.php)[../index.php]
-- **Advanced Function 2** - Text and Sentiment Analysis on Restaurant Reviews (analysis_local.py)[../analysis/analysis_local.py]
+- **Advanced Function 1** - Personalized Restaurant Recommendations [index.php](index.php)
+- **Advanced Function 2** - Text and Sentiment Analysis on Restaurant Reviews [analysis_local.py](analysis/analysis_local.py)
 
 ## Run Locally
 - Dependencies: PHP 3.1.0, Boostrap 3.3.7, jQuery 3.3.1, Font Awesome 4.3.0
