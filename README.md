@@ -33,7 +33,7 @@ Video Demo: https://www.youtube.com/watch?v=BPI_TsDOnHs&feature=youtu.be
 - Kernel Version:	3.10.0-327.22.2.el7.x86_64
 
 ## Final Report
-**Briefly describe what the project accomplished.**  
+###Briefly describe what the project accomplished.###  
 
 Picking a place to eat at is sometimes one of the most difficult choices that someone can make. Our group wanted to develop an application which helps people decide where to eat, essentially a restaurant social media application similar to Zomato/Yelp. Users can search restaurants by location or cuisine, review various restaurants they have ate at, and also favorite their most frequented restaurants. The application is also able to use this data to suggest recommended restaurants based on the users’ favorites, restaurant searches, and cuisine preferences. Users are able to find their friends and connect with other users, growing their food network and discovering other popular restaurants.
 
