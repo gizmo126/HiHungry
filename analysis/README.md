@@ -62,3 +62,6 @@ Currently, this does not work on cPanel, only localhost. If you SSH in, and run 
 ## Resources
 - https://medium.com/tensorist/classifying-yelp-reviews-using-nltk-and-scikit-learn-c58e71e962d9
 - https://stackoverflow.com/questions/28200786/how-to-plot-scikit-learn-classification-report
+- http://www.nltk.org/howto/sentiment.html
+- http://peekaboo-vision.blogspot.com/2012/11/a-wordcloud-in-python.html
+- https://pythonspot.com/python-sentiment-analysis/
