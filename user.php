@@ -172,7 +172,7 @@
                                   <button data-toggle="modal" data-target="#addFriendModal" data-id="<?php echo $fd->user_id . ',' . $user1id; ?>" class="btn btn-default">Add Friend</button>
                                 <?php
                                 } else { ?>
-                                  <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $u->user_id . ',' . $user1id; ?>" class="btn btn-default">Unfriend</button>
+                                  <button data-toggle="modal" data-target="#deleteFriendModal" data-id="<?php echo $fd->user_id . ',' . $user1id; ?>" class="btn btn-default">Unfriend</button>
                                 <?php
                                 }
                             ?>
