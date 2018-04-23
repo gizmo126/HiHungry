@@ -33,7 +33,7 @@ Video Demo: https://www.youtube.com/watch?v=BPI_TsDOnHs&feature=youtu.be
 - Kernel Version:	3.10.0-327.22.2.el7.x86_64
 
 ## Final Report
-###Briefly describe what the project accomplished.###  
+**Briefly describe what the project accomplished.**  
 
 Picking a place to eat at is sometimes one of the most difficult choices that someone can make. Our group wanted to develop an application which helps people decide where to eat, essentially a restaurant social media application similar to Zomato/Yelp. Users can search restaurants by location or cuisine, review various restaurants they have ate at, and also favorite their most frequented restaurants. The application is also able to use this data to suggest recommended restaurants based on the users’ favorites, restaurant searches, and cuisine preferences. Users are able to find their friends and connect with other users, growing their food network and discovering other popular restaurants.
 
@@ -76,7 +76,7 @@ One basic function we implemented is adding a review to a restaurant. Once the u
 
 **Explain your two advanced functions and why they are considered as advanced.**  
 
-**Advanced Function 1** - Personalized Restaurant Recommendations ([/index.php](index.php))
+**Advanced Function 1** - Personalized Restaurant Recommendations ([/index.php](index.php))  
 Our first advanced function is making personalized restaurant recommendations for our users. We decided on this capability because of its usefulness and helpfulness in a user’s point of view. We realized that the reason most people would use this app would be to gather information about different restaurants in order to make a better decision of where to eat. One of the most common decisions people have to make day to day is where to eat. Using this functionality, we would be able to recommend calculated restaurants to go to based on people’s interests and other helpful information, and in a sense help the user make this decision.
 
 Our recommending function takes into account all of the information stored in our database tables, and using specific algorithms, generates a list of restaurants that may interest the user. Some variables the algorithm analyzes are the User’s favorite restaurants, related cuisines based on user searches, and the most popular restaurants among all of the users.
@@ -87,7 +87,7 @@ Using a list of top cuisine searches, we were able to create a list of popular r
 
 Our recommendation functionality is heavily reliant on user input, as the app is a social food app. Results are better with more input by our users. Yet, we realize that new users will have no friends, favorites, or searches at first. We counter this edge case by recommending the top restaurants of all other users until the system is able to gather enough data from the user to make different recommendations.
 
-**Advanced Function 2** - Text and Sentiment Analysis on Restaurant Reviews ([/analysis/analysis_local.py](analysis/analysis_local.py))
+**Advanced Function 2** - Text and Sentiment Analysis on Restaurant Reviews ([/analysis/analysis_local.py](analysis/analysis_local.py))  
 Our second advanced function is performing Sentiment and Text analysis on restaurant reviews. This is done using the NLTK and Scikit-learn toolkits in Python. First, we generate a word cloud, picking out the key adjectives to visualize what other users are saying about the restaurant, with the size of the words depending the frequency in which it appears. Then using machine learning techniques, we train a model with all of our reviews to be able to predict whether each reviews is positive or negative. We determine the overall sentiment of the restaurant by predicting each review, and display the results to the users. This is important for our application because it gives users the ability to gain additional insight into the reviews. It’s a complex way of analyzing the reviews but also provides the user with a short summary of the results in which they can quickly analyze this information. This is a unique feature that other restaurant platforms do not have, and can be developed even further to gather and learn valuable data from user reviews. The results from the sentiment and text analysis can be viewed by opening this functionality on a specific restaurant’s page.
 
 For the independent and dependent variables, `X` represents the review text and `y` represents the rating out of 5. Then to process our plain-text reviews, we use a bag-of-words approach and store each unique word from the text as a number. We remove punctuation and stopwords, and get a list of tokens. Then the text collection is converted into a matrix of token counts and stored into `X`. `X` is then transformed. After processing the reviews text, we split our `X` and `y` into a training and a test set using train_test_split. We use a Multinomial Naive Bayes model to fit to the training set. Then we evaluate the predictions against the actual ratings to judge the accuracy and print out this classification report using `matplotlib` and saved as a png.
