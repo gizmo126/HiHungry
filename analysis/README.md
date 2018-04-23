@@ -1,5 +1,5 @@
 # Advanced Function - Sentiment and Text Analysis
-This is one of our advanced functions. In the HiHungry application, it is run from the `reviewdata.php` page using `shell_exec()` and it passes the reviews of the current restaurant to the python script to perform sentiment analysis, text analysis, and to generate a word cloud and classification report png to pass back to the application. This folder contains a local copy that can be run without the application, `analysis_local.py`, which contains a sample data set that simulates the reviews which the application would have sent and performs analysis on those reviews.
+This is one of our advanced functions. In the HiHungry application, it is run from the `reviewdata.php` page using `shell_exec()` and it passes the reviews of the current restaurant to the python script to perform sentiment analysis, text analysis, and to generate a word cloud and classification report png to pass back to the application. This folder contains a local copy that can be run without the application, `analysis_local.py`, which contains a sample data set that simulates the reviews which the application would have sent and performs analysis on those reviews. 
 
 ## Description
 To analyze our restaurant reviews further, we use sentiment analysis and text analysis methods. For the independent and dependent variables, `X` represents the review text and `y` represents the rating out of 5. Then to process our plain-text reviews, we use a bag-of-words approach and store each unique word from the text as a number. We remove punctuation and stopwords, and get a list of tokens. Then the text collection is converted into a matrix of token counts and stored into `X`. `X` is then transformed.
@@ -21,7 +21,7 @@ Currently, this does not work on cPanel, only localhost. If you SSH in, and run 
 - https://stackoverflow.com/questions/27730715/nltk-cannot-find-the-file
 
 ## Files
-- **/img/** - contains the png images outputted by the script
+- **/img/** - contains the png images outputted by the script (classif_report.png and word_cloud.png)
 - **analysis_local.py** - this is the file run by our application repurposed for local running. contains a set of reviews to simulate reviews the application would pass
 - **reviews.json** - contains all of our review data
 - **yelp.csv** - contains 10,000 reviews from Yelp restaurants
