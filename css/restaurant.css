@@ -5,3 +5,24 @@
 .checked {
     color: orange;
 }
+
+/* https://stackoverflow.com/questions/1964839/how-can-i-create-a-please-wait-loading-animation-using-jquery */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba( 255, 255, 255, .8) url('img/ajax-loader.gif') 50% 50% no-repeat;
+}
+
+body.loading .modal {
+    overflow: hidden;
+}
+
+body.loading .modal {
+    display: block;
+}

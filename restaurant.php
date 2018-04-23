@@ -27,10 +27,12 @@
       $reviews_sql = "SELECT * FROM Reviews WHERE restaurant_id='$restid'";
       $reviews_result = mysqli_query($conn, $reviews_sql);
       $reviews = [];
+      $reviews_text = [];
       if(mysqli_num_rows($reviews_result) > 0){
           while($row = mysqli_fetch_assoc($reviews_result)){
               $review = new Review($row['review_id'], $conn, NULL);
               array_push($reviews, $review);
+              array_push($reviews_text, $review->review_text);
           }
       }
 
@@ -131,6 +133,9 @@
       <div>
         <div class="row">
           <h2> Reviews: <?php echo $num ?> </h2>
+          <?php
+            echo '<a id="reviewdata" class="btn btn-primary" href="reviewdata.php?restid=' . $rest->restaurant_id . '">Review Data</a>';
+          ?>
           <button type="button" data-toggle="modal" data-target="#addReviewModal" class="btn btn-primary">Add Review +</button>
         </div>
         <?php if(count($reviews) == 0){ ?>
@@ -211,3 +216,14 @@
       </div>
     </div>
   </div>
+
+  <!-- spinning icon while loading review_data -->
+  <div class="modal"><!-- Place at bottom of page --></div>
+  <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script>
+    $body = $("body");
+    $("#reviewdata").on('click', function(){
+      $body.addClass("loading");
+    });
+  </script>
