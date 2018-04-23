@@ -33,19 +33,19 @@ Video Demo: https://www.youtube.com/watch?v=BPI_TsDOnHs&feature=youtu.be
 - Kernel Version:	3.10.0-327.22.2.el7.x86_64
 
 ## Final Report
-**Briefly describe what the project accomplished.**
+**Briefly describe what the project accomplished.**  
 
 Picking a place to eat at is sometimes one of the most difficult choices that someone can make. Our group wanted to develop an application which helps people decide where to eat, essentially a restaurant social media application similar to Zomato/Yelp. Users can search restaurants by location or cuisine, review various restaurants they have ate at, and also favorite their most frequented restaurants. The application is also able to use this data to suggest recommended restaurants based on the users’ favorites, restaurant searches, and cuisine preferences. Users are able to find their friends and connect with other users, growing their food network and discovering other popular restaurants.
 
-**Discuss the usefulness of your project, i.e. what real problem you solved.**
+**Discuss the usefulness of your project, i.e. what real problem you solved.**  
 
 Our project is useful for user’s to decide where to eat in a specific area and to see other users’ reviews on restaurants to determine whether or not that particular restaurant is suitable for them based on it’s reviews, ratings, cuisine type, and price range. The application has a social media functionality to allow users to friend/connect with other users, helping them find users with similar tastes and see which restaurants that other user has reviewed/favorited. Our algorithm recommends new restaurants to users based off personalized criteria, helping them explore new restaurants. We also provide an in depth look into reviews for each restaurant by using machine learning techniques, picking out what other users are saying about this restaurant and generating sentiment analysis. Using an intuitive user interface that isn’t cluttered and confusing like that of Yelp or Zomato, we provide users with a smooth experience to quickly keep track of their favorite dining spots, explore new restaurants, and discover friends with similar tastes.
 
-**Discuss the data in your database.**
+**Discuss the data in your database.**  
 
 We have 8 different tables in our database. The restaurant, cuisine, restaurant_type, and review data in our database was populated using the Zomato API. Our group manually input various users for our application’s users, and also asked our friends to create test accounts to review restaurants they have eaten at. We also keep track of user restaurant search history to allow us to more accurately recommend personalized restaurants to users. The favorites table stores the user_id and restaraurant_id for each user’s favorite restaurants. The friends table was used for keeping track of each user’s friends. In our database, we have a total of: 259 restaurants, 1294 reviews, 37 users, and 153 cuisines.
 
-**Include your ER Diagram and Schema.**
+**Include your ER Diagram and Schema.**  
 
 Restaurant(restID, name, price_range, address, city, zipcode, picture, votes, delivery)
 User(Username, Password, userid, firstname, lastname, picture)
@@ -56,11 +56,11 @@ SearchHistory(userid, searchID, restID)
 Review(restID, userid, rating, reviewid, text)
 RestaurantType(restID, cuisineid)
 
-**Briefly discuss from where you collected data and how you did it.**
+**Briefly discuss from where you collected data and how you did it.**  
 
 We retrieved the data from Zomato using their API. We used Python to query, organize, and store all of the data into different JSON files and inserted this data into our MySQL database. The scripts we used to populate our database are located under the [/populate_database/](/populate_database) folder in our repository.
 
-**Clearly list the functionality of your application (feature specs).**
+**Clearly list the functionality of your application (feature specs).**  
 - Login or create an account with username, password, name, and profile picture
 - Allow users to browse through restaurants and search restaurants by location and cuisine type
 - View the restaurant’s profile and view its average rating, reviews (including text and sentiment analysis results), price range, cuisine type, etc.
@@ -70,11 +70,11 @@ We retrieved the data from Zomato using their API. We used Python to query, orga
 - View your own profile page, including your favorite restaurants, your friends, and your reviews
 - Personalized restaurant recommendation based on an algorithm
 
-**Explain one basic function.**
+**Explain one basic function.**  
 
 One basic function we implemented is adding a review to a restaurant. Once the user gets to a restaurant’s profile page and then clicks the “Add Review+” button, the user can then enter in a numerical value for the rating and write a review text. We used an object oriented approach by defining a review object which looks to help save time.
 
-**Explain your two advanced functions and why they are considered as advanced.**
+**Explain your two advanced functions and why they are considered as advanced.**  
 
 **Advanced Function 1** - Personalized Restaurant Recommendations ([/index.php](index.php))
 Our first advanced function is making personalized restaurant recommendations for our users. We decided on this capability because of its usefulness and helpfulness in a user’s point of view. We realized that the reason most people would use this app would be to gather information about different restaurants in order to make a better decision of where to eat. One of the most common decisions people have to make day to day is where to eat. Using this functionality, we would be able to recommend calculated restaurants to go to based on people’s interests and other helpful information, and in a sense help the user make this decision.
@@ -104,7 +104,7 @@ Sources:
 - http://peekaboo-vision.blogspot.com/2012/11/a-wordcloud-in-python.html
 - https://pythonspot.com/python-sentiment-analysis/
 
-**Describe one technical challenge that the team encountered.**
+**Describe one technical challenge that the team encountered.**  
 
 An issue we faced is that our sentiment and text analysis advanced function does not work on cPanel, only localhost. I can run the Python code through a terminal shell if I SSH into our cPanel account. However, for some reason on cPanel, when running it through a PHP `shell_exec()` command, it does not actually run. There may be a permission issue with the user that `shell_exec()` uses to run the script compared to the user permissions used when I run it through terminal through SSH. Using `test.php` and `test.py`, I am able to demonstrate that we can run a python script through PHP's `shell_exec()`. The data is successfully passed back and forth between the PHP and Python script even while using the application through the browser. However, if I add `import nltk` to the top of `test.py`, it does not run. This import statement causes an error. Other users have encountered this error on stackoverflow but we were not able to resolve it. I tried to change the permissions for the file access to allow the `shell_exec()` user to run it but changing the read write access gave us a 500 internal server error for our application. Engineering IT was not able to resolve the issue.
 
@@ -112,11 +112,11 @@ Sources:
 - https://stackoverflow.com/questions/32491545/accessing-python-nltk-with-php-fails
 - https://stackoverflow.com/questions/27730715/nltk-cannot-find-the-file
 
-**State if everything went according to the initial development plan and proposed specifications.**
+**State if everything went according to the initial development plan and proposed specifications.**  
 
 Our project followed most of the initial development plan, however there were a few tweaks. At one point, we were looking at a Django application using postgreSQL for our database and Heroku for deploying our site, but due to configuration issues, we decided on a PHP application using cPanel and MySQL. Another tweak we made is that we didn’t keep track of the restaurants users ate at and couldn’t display the menus for every restaurant as we had originally hoped because the Zomato API did not contain this information. We followed the timeline pretty well as we met up numerous times to ensure that we would meet the proposed deadlines.
 
-**Describe the final division of labor and how did you manage team work.**
+**Describe the final division of labor and how did you manage team work.**  
 - Sam - setting up development environment, populating database, Github, logout, profile, reviews (add/delete), advanced function (sentiment and text analysis), front-end development (modals, bootstrap components/css, jquery)
 - Sean - profile, user, and restaurants search pages, advanced sql queries, advanced function (restaurant recommendation)
 - Kevin - Login page, user search and user-to-user functionalities (add/delete),
