@@ -17,7 +17,7 @@
 - **06_populate_db_cuisines.py** -- populates the database with cuisine data
 - **07_populate_db_type.py** -- populates the database with association between our restaurants and their cuisines
 - **08_populate_json_rest_id.py** -- downloads all the restaurant ids from our database
-- **09_populate_db_reviews_rest_id.py** -- adds restaurant ids to reviews that do not have an associated restaurant id in our databases
+- **09_populate_db_reviews_rest_id.py** -- adds restaurant ids to reviews that do not have an associated restaurant id
 - **10_delete_reviews_no_restaurant.py** -- deletes the reviews in our database that dont have associated restaurant ids
 - **11_populate_rest_photos_local.py** -- downloads all of our restaurants' photos from database to local copy to speed up page loading. photo is named `<restaurant_id>.jpg`
 - **12_populate_user_photos_local.py** -- downloads all of our users' photos from database to local copy to speed up page loading. photo is named `<user_id>.jpg`
