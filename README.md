@@ -47,14 +47,14 @@ We have 8 different tables in our database. The restaurant, cuisine, restaurant_
 
 **Include your ER Diagram and Schema.**  
 
-Restaurant(restID, name, price_range, address, city, zipcode, picture, votes, delivery)
-User(Username, Password, userid, firstname, lastname, picture)
-Cuisine(id, name)
-Friends(user1id, user2id)
-Favorite(userid, restID)
-SearchHistory(userid, searchID, restID)
-Review(restID, userid, rating, reviewid, text)
-RestaurantType(restID, cuisineid)
+- Restaurant(restID, name, price_range, address, city, zipcode, picture, votes, delivery)
+- User(Username, Password, userid, firstname, lastname, picture)
+- Cuisine(id, name)
+- Friends(user1id, user2id)
+- Favorite(userid, restID)
+- SearchHistory(userid, searchID, restID)
+- Review(restID, userid, rating, reviewid, text)
+- RestaurantType(restID, cuisineid)
 
 **Briefly discuss from where you collected data and how you did it.**  
 
